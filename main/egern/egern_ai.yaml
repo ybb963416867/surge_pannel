@@ -3,7 +3,7 @@ allow_external_connections: true
 vif_only: true
 hide_vpn_icon: false
 hijack_dns:
-    - '*:53'
+  - '*:53'
 geoip_db_url: https://raw.githubusercontent.com/Thoseyearsbrian/GeoIP2-Country/main/data/GeoLite2-Country.mmdb
 proxy_latency_test_url: http://cp.cloudflare.com/generate_204
 direct_latency_test_url: http://connect.aliyun.com/generate_204
@@ -12,357 +12,461 @@ include_all_networks: false
 include_apns: false
 include_cellular_services: false
 include_local_networks: false
+vif_excluded_routes:
+  - 10.0.0.0/8
+  - 172.16.0.0/12
+  - 192.168.0.0/16
 dns:
-    upstreams:
-        secure:
-            - https://dns.alidns.com/dns-query
-            - tls://dns.alidns.com
-            - tls://1.1.1.1
-            - tls://1.0.0.1
-            - https://dns.cloudflare.com/dns-query
-    hosts:
-        ip6-localhost:
-            - ::1
-        routerlogin.net:
-            - system
-        router.asus.com:
-            - system
-        amplifi.lan:
-            - system
-        '*.lan':
-            - system
-        _hotspot_.m2m:
-            - system
-        hotspot.cslwifi.com:
-            - system
-        dns.alidns.com:
-            - 2400:3200::1
-bypass_tunnel_proxy:
-    - 127.0.0.1
-    - localhost
-    - '*.local'
-    - 10.0.0.0/8
-    - 172.16.0.0/12
-    - 192.168.0.0/16
-    - 100.64.0.0/10
-    - 169.254.0.0/16
-    - 198.18.0.0/15
-    - 17.0.0.0/8
-    - 224.0.0.0/4
-    - 255.255.255.255
-    - ::1
-    - ::/128
-    - ::ffff:0:0/96
-    - fe80::/10
-    - fc00::/7
-    - fd00::/8
-    - ff00::/8
-real_ip_domains:
-    - '*.local'
-    - '*.lan'
-    - '*.home'
-    - msftconnecttest.com
-    - msftncsi.com
-    - '*.msftconnecttest.com'
-    - '*.msftncsi.com'
-    - '*.srv.nintendo.net'
-    - '*.stun.playstation.net'
-    - xbox.*.microsoft.com
-    - '*.xboxlive.com'
-    - '*.battlenet.com.cn'
-    - '*.battlenet.com'
-    - '*.blzstatic.cn'
-    - '*.battle.net'
+  bootstrap:
+    - system
+    - 223.5.5.5
+    - 119.29.29.29
+  upstreams:
+    AliDNS:
+      - h3://dns.alidns.com/dns-query
+    DNSPod:
+      - https://doh.pub/dns-query
+    ByteDance:
+      - 180.184.1.1
+      - 180.184.2.2
+    Default:
+      - https://doh.pub/dns-query
+      - h3://dns.alidns.com/dns-query
+  forward:
+    - domain_suffix:
+        match: alibaba.com
+        value: AliDNS
+    - domain_suffix:
+        match: alipay.com
+        value: AliDNS
+    - domain_suffix:
+        match: alipayobjects.com
+        value: AliDNS
+    - domain_suffix:
+        match: aliapp.org
+        value: AliDNS
+    - domain_suffix:
+        match: alicdn.com
+        value: AliDNS
+    - domain_suffix:
+        match: aliyun.com
+        value: AliDNS
+    - domain_suffix:
+        match: taobao.com
+        value: AliDNS
+    - domain_suffix:
+        match: tmall.com
+        value: AliDNS
+    - domain_suffix:
+        match: dingtalk.com
+        value: AliDNS
+    - domain_suffix:
+        match: 1688.com
+        value: AliDNS
+    - domain_suffix:
+        match: youku.com
+        value: AliDNS
+    - domain_suffix:
+        match: uc.cn
+        value: AliDNS
+    - domain_suffix:
+        match: amap.com
+        value: AliDNS
+    - domain_suffix:
+        match: ele.me
+        value: AliDNS
+    - domain_suffix:
+        match: hichina.com
+        value: AliDNS
+    - domain_suffix:
+        match: alibabacloud.com
+        value: AliDNS
+    - domain_suffix:
+        match: qq.com
+        value: DNSPod
+    - domain_suffix:
+        match: tencent.com
+        value: DNSPod
+    - domain_suffix:
+        match: wechat.com
+        value: DNSPod
+    - domain_suffix:
+        match: qpic.cn
+        value: DNSPod
+    - domain_suffix:
+        match: qlogo.cn
+        value: DNSPod
+    - domain_suffix:
+        match: gtimg.com
+        value: DNSPod
+    - domain_suffix:
+        match: qcloud.com
+        value: DNSPod
+    - domain_suffix:
+        match: wegame.com
+        value: DNSPod
+    - domain_suffix:
+        match: bytedance.com
+        value: ByteDance
+    - domain_suffix:
+        match: byteimg.com
+        value: ByteDance
+    - domain_suffix:
+        match: douyinvod.com
+        value: ByteDance
+    - domain_suffix:
+        match: douyin.com
+        value: ByteDance
+    - domain_suffix:
+        match: toutiao.com
+        value: ByteDance
+    - domain_suffix:
+        match: bdurl.net
+        value: ByteDance
+    - domain_suffix:
+        match: bytecdn.cn
+        value: ByteDance
+    - domain_suffix:
+        match: feishu.cn
+        value: ByteDance
+    - domain_suffix:
+        match: larksuite.com
+        value: ByteDance
+    - domain_suffix:
+        match: ixigua.com
+        value: ByteDance
+    - domain_suffix:
+        match: capcut.com
+        value: ByteDance
+    - domain_suffix:
+        match: zjurl.cn
+        value: ByteDance
+    - domain_suffix:
+        match: pstatp.com
+        value: ByteDance
+    - domain_suffix:
+        match: snssdk.com
+        value: ByteDance
+    - domain_suffix:
+        match: local
+        value: system
+    - domain_suffix:
+        match: localhost
+        value: system
+    - domain_suffix:
+        match: lan
+        value: system
+    - domain_suffix:
+        match: router.asus.com
+        value: system
+    - domain_wildcard:
+        match: '*'
+        value: Default
 policy_groups:
-    - select:
-          name: Proxy
-          policies:
-              - 🇺🇲 美国节点
-              - 🇭🇰 香港节点
-              - 🇺🇲 美国节点
-              - 🇸🇬 新加坡节点
-              - 🇯🇵 日本节点
-              - 🇨🇳 台湾节点
-              - ✈️ 我的节点
-          flatten: true
-          icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Global.png
-    - select:
-          name: 谷歌服务
-          policies:
-              - 🇺🇲 美国节点
-              - 🇭🇰 香港节点
-              - 🇺🇲 美国节点
-              - 🇸🇬 新加坡节点
-              - 🇯🇵 日本节点
-              - 🇨🇳 台湾节点
-          flatten: true
-          icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Google.png
-    - select:
-          name: 智能助理
-          policies:
-              - 🇺🇲 美国节点
-              - 🇭🇰 香港节点
-              - 🇺🇲 美国节点
-              - 🇸🇬 新加坡节点
-              - 🇯🇵 日本节点
-              - 🇨🇳 台湾节点
-          flatten: true
-          icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/ChatGPT.png
-    - select:
-          name: GitHub
-          policies:
-              - 🇺🇲 美国节点
-              - 🇭🇰 香港节点
-              - 🇺🇲 美国节点
-              - 🇸🇬 新加坡节点
-              - 🇯🇵 日本节点
-              - 🇨🇳 台湾节点
-          flatten: true
-          icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/GitHub.png
-    - select:
-          name: 电报信息
-          policies:
-              - 🇺🇲 美国节点
-              - 🇭🇰 香港节点
-              - 🇺🇲 美国节点
-              - 🇸🇬 新加坡节点
-              - 🇯🇵 日本节点
-              - 🇨🇳 台湾节点
-          flatten: true
-          icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Telegram.png
-    - select:
-          name: Crypto
-          policies:
-              - 🇺🇲 美国节点
-              - 🇭🇰 香港节点
-              - 🇺🇲 美国节点
-              - 🇸🇬 新加坡节点
-              - 🇯🇵 日本节点
-              - 🇨🇳 台湾节点
-          flatten: true
-          icon: https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/btc.png
-    - select:
-          name: 国外媒体
-          policies:
-              - 🇺🇲 美国节点
-              - 🇭🇰 香港节点
-              - 🇺🇲 美国节点
-              - 🇸🇬 新加坡节点
-              - 🇯🇵 日本节点
-              - 🇨🇳 台湾节点
-          flatten: true
-          icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/YouTube.png
-    - select:
-          name: 国内媒体
-          policies:
-              - DIRECT
-              - 🇭🇰 香港节点
-              - 🇺🇲 美国节点
-              - 🇸🇬 新加坡节点
-              - 🇯🇵 日本节点
-              - 🇨🇳 台湾节点
-          flatten: true
-          icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/DomesticMedia.png
-    - select:
-          name: 微软服务
-          policies:
-              - 🇺🇲 美国节点
-              - 🇭🇰 香港节点
-              - 🇺🇲 美国节点
-              - 🇸🇬 新加坡节点
-              - 🇯🇵 日本节点
-              - 🇨🇳 台湾节点
-          flatten: true
-          icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Microsoft.png
-    - select:
-          name: 苹果服务
-          policies:
-              - DIRECT
-              - 🇭🇰 香港节点
-              - 🇺🇲 美国节点
-              - 🇸🇬 新加坡节点
-              - 🇯🇵 日本节点
-              - 🇨🇳 台湾节点
-          flatten: true
-          icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Apple.png
-    - select:
-          name: 游戏平台
-          policies:
-              - DIRECT
-              - 🇭🇰 香港节点
-              - 🇺🇲 美国节点
-              - 🇸🇬 新加坡节点
-              - 🇯🇵 日本节点
-              - 🇨🇳 台湾节点
-          flatten: true
-          icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Game.png
-    - select:
-          name: WeChat
-          policies:
-              - DIRECT
-              - 🇭🇰 香港节点
-              - 🇺🇲 美国节点
-              - 🇸🇬 新加坡节点
-              - 🇯🇵 日本节点
-              - 🇨🇳 台湾节点
-          flatten: true
-          icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/WeChat.png
-    - auto_test:
-          name: 🇭🇰 香港节点
-          policies:
-              - ✈️ 我的节点
-          flatten: true
-          filter: (🇭🇰)|(香港)|(Hong)|(HK)
-          hidden: false
-          icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/HongKong.png
-    - auto_test:
-          name: 🇺🇲 美国节点
-          policies:
-              - ✈️ 我的节点
-          flatten: true
-          filter: (🇺🇸)|(美国)|(States)|(US)
-          hidden: false
-          icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/UnitedStates.png
-    - auto_test:
-          name: 🇯🇵 日本节点
-          policies:
-              - ✈️ 我的节点
-          flatten: true
-          filter: (🇯🇵)|(日本)|(Japan)|(JP)
-          hidden: false
-          icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Japan.png
-    - auto_test:
-          name: 🇨🇳 台湾节点
-          policies:
-              - ✈️ 我的节点
-          flatten: true
-          filter: (🇨🇳)|(台湾)|(Tai)|(TW)
-          hidden: false
-          icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Taiwan.png
-    - auto_test:
-          name: 🇸🇬 新加坡节点
-          policies:
-              - ✈️ 我的节点
-          flatten: true
-          filter: (🇸🇬)|(新加坡)|(Singapore)|(SG)
-          hidden: false
-          icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Singapore.png
-    - external:
-          name: ✈️ 我的节点
-          type: select
-          urls:
-              - https://sub.store/download/collection/AllServer?target=Egern
-          update_interval: 86400
-          hidden: false
+  - select:
+      name: Proxy
+      policies:
+        - 🇸🇬 新加坡节点
+        - 🇨🇳 台湾节点
+        - 🇯🇵 日本节点
+        - 🇺🇲 美国节点
+        - 🇭🇰 香港节点
+      flatten: false
+      icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Global.png
+      hidden: false
+  - select:
+      name: 谷歌服务
+      policies:
+        - 🇺🇲 美国节点
+        - 🇭🇰 香港节点
+        - 🇺🇲 美国节点
+        - 🇸🇬 新加坡节点
+        - 🇯🇵 日本节点
+        - 🇨🇳 台湾节点
+      flatten: false
+      icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Google.png
+      hidden: false
+  - select:
+      name: 智能助理
+      policies:
+        - 🇺🇲 美国节点
+        - 🇭🇰 香港节点
+        - 🇺🇲 美国节点
+        - 🇸🇬 新加坡节点
+        - 🇯🇵 日本节点
+        - 🇨🇳 台湾节点
+      flatten: false
+      icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/ChatGPT.png
+      hidden: false
+  - select:
+      name: GitHub
+      policies:
+        - 🇺🇲 美国节点
+        - 🇭🇰 香港节点
+        - 🇺🇲 美国节点
+        - 🇸🇬 新加坡节点
+        - 🇯🇵 日本节点
+        - 🇨🇳 台湾节点
+      flatten: false
+      icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/GitHub.png
+      hidden: false
+  - select:
+      name: 电报信息
+      policies:
+        - 🇨🇳 台湾节点
+        - 🇺🇲 美国节点
+        - 🇭🇰 香港节点
+        - 🇺🇲 美国节点
+        - 🇸🇬 新加坡节点
+        - 🇯🇵 日本节点
+      flatten: false
+      icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Telegram.png
+      hidden: false
+  - select:
+      name: Crypto
+      policies:
+        - 🇺🇲 美国节点
+        - 🇭🇰 香港节点
+        - 🇺🇲 美国节点
+        - 🇸🇬 新加坡节点
+        - 🇯🇵 日本节点
+        - 🇨🇳 台湾节点
+      flatten: false
+      icon: https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/btc.png
+      hidden: false
+  - select:
+      name: 国外媒体
+      policies:
+        - 🇺🇲 美国节点
+        - 🇭🇰 香港节点
+        - 🇺🇲 美国节点
+        - 🇸🇬 新加坡节点
+        - 🇯🇵 日本节点
+        - 🇨🇳 台湾节点
+      flatten: false
+      icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/YouTube.png
+      hidden: false
+  - select:
+      name: 国内媒体
+      policies:
+        - DIRECT
+      flatten: true
+      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/DomesticMedia.png
+      hidden: false
+  - select:
+      name: 微软服务
+      policies:
+        - 🇺🇲 美国节点
+        - 🇭🇰 香港节点
+        - 🇺🇲 美国节点
+        - 🇸🇬 新加坡节点
+        - 🇯🇵 日本节点
+        - 🇨🇳 台湾节点
+      flatten: false
+      icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Microsoft.png
+      hidden: false
+  - select:
+      name: 苹果服务
+      policies:
+        - DIRECT
+        - 🇺🇲 美国节点
+      flatten: false
+      icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Apple.png
+      hidden: false
+  - select:
+      name: 游戏平台
+      policies:
+        - DIRECT
+      flatten: false
+      icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Game.png
+      hidden: false
+  - select:
+      name: WeChat
+      policies:
+        - DIRECT
+        - 🇭🇰 香港节点
+        - 🇺🇲 美国节点
+        - 🇸🇬 新加坡节点
+        - 🇯🇵 日本节点
+        - 🇨🇳 台湾节点
+      flatten: false
+      icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/WeChat.png
+      hidden: false
+  - auto_test:
+      name: 🇭🇰 香港节点
+      policies:
+        - ✈️ 我的节点
+      flatten: true
+      filter: (🇭🇰)|(香港)|(Hong)|(HK)
+      icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/HongKong.png
+      hidden: false
+  - auto_test:
+      name: 🇺🇲 美国节点
+      policies:
+        - ✈️ 我的节点
+      flatten: true
+      filter: (🇺🇸)|(美国)|(States)|(US)
+      icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/UnitedStates.png
+      hidden: false
+  - auto_test:
+      name: 🇯🇵 日本节点
+      policies:
+        - ✈️ 我的节点
+      flatten: true
+      filter: (🇯🇵)|(日本)|(Japan)|(JP)
+      icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Japan.png
+      hidden: false
+  - auto_test:
+      name: 🇨🇳 台湾节点
+      policies:
+        - ✈️ 我的节点
+      flatten: true
+      filter: (🇨🇳)|(台湾)|(Tai)|(TW)
+      icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Taiwan.png
+      hidden: false
+  - auto_test:
+      name: 🇸🇬 新加坡节点
+      policies:
+        - ✈️ 我的节点
+      flatten: true
+      filter: (🇸🇬)|(新加坡)|(Singapore)|(SG)
+      icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Singapore.png
+      hidden: false
+  - external:
+      name: ✈️ 我的节点
+      type: select
+      urls:
+        - https://sub.store/download/collection/AllServer?target=Egern
+      update_interval: 86400
+      hidden: false
 rules:
-    - rule_set:
-          match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Background_Block.list
-          policy: REJECT
-    - rule_set:
-          match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Backdoor_Block.list
-          policy: REJECT
-    - rule_set:
-          match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Botnet_Block.list
-          policy: REJECT
-    - rule_set:
-          match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Malware_IOC_Block.list
-          policy: REJECT
-          disabled: false
-    - rule_set:
-          match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Pegasus_Block.list
-          policy: REJECT
-          disabled: false
-    - rule_set:
-          match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Phishing_Block.list
-          policy: REJECT
-          disabled: false
-    - rule_set:
-          match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Scam_Block.list
-          policy: REJECT
-          disabled: false
-    - rule_set:
-          match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Quarantine_Block.list
-          policy: REJECT
-    - rule_set:
-          match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/OpenAI.list
-          policy: 智能助理
-    - rule_set:
-          match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Apple.list
-          policy: 苹果服务
-    - rule_set:
-          match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/GitHub.list
-          policy: GitHub
-    - rule_set:
-          match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Crypto.list
-          policy: Crypto
-    - rule_set:
-          match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Microsoft.list
-          policy: 微软服务
-    - rule_set:
-          match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Google.list
-          policy: 谷歌服务
-    - rule_set:
-          match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Telegram.list
-          policy: 电报信息
-    - rule_set:
-          match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/GamePlatforms.list
-          policy: 游戏平台
-    - rule_set:
-          match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/WeChat.list
-          policy: WeChat
-    - rule_set:
-          match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/ChinaMedia.list
-          policy: 国内媒体
-    - rule_set:
-          match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/GlobalMedia.list
-          policy: 国外媒体
-    - rule_set:
-          match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Proxy.list
-          policy: Proxy
-    - rule_set:
-          match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/China.list
-          policy: DIRECT
-    - rule_set:
-          match: LAN
-          policy: DIRECT
-    - geoip:
-          match: CN
-          policy: DIRECT
-    - default:
-          policy: REJECT
+  - rule_set:
+      match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Background_Block.list
+      policy: REJECT
+  - rule_set:
+      match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Backdoor_Block.list
+      policy: REJECT
+  - rule_set:
+      match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Botnet_Block.list
+      policy: REJECT
+  - rule_set:
+      match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Malware_IOC_Block.list
+      policy: REJECT
+      disabled: false
+  - rule_set:
+      match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Pegasus_Block.list
+      policy: REJECT
+      disabled: false
+  - rule_set:
+      match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Phishing_Block.list
+      policy: REJECT
+      disabled: false
+  - rule_set:
+      match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Scam_Block.list
+      policy: REJECT
+      disabled: false
+  - rule_set:
+      match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Quarantine_Block.list
+      policy: REJECT
+  - rule_set:
+      match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/OpenAI.list
+      policy: 智能助理
+  - rule_set:
+      match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Apple.list
+      policy: 苹果服务
+  - rule_set:
+      match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/GitHub.list
+      policy: GitHub
+  - rule_set:
+      match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Crypto.list
+      policy: Crypto
+  - rule_set:
+      match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Microsoft.list
+      policy: 微软服务
+  - rule_set:
+      match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Google.list
+      policy: 谷歌服务
+  - rule_set:
+      match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Telegram.list
+      policy: 电报信息
+  - rule_set:
+      match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/GamePlatforms.list
+      policy: 游戏平台
+  - rule_set:
+      match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/WeChat.list
+      policy: WeChat
+  - rule_set:
+      match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/ChinaMedia.list
+      policy: 国内媒体
+  - rule_set:
+      match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/GlobalMedia.list
+      policy: 国外媒体
+  - rule_set:
+      match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Proxy.list
+      policy: Proxy
+  - rule_set:
+      match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/China.list
+      policy: DIRECT
+  - rule_set:
+      match: LAN
+      policy: DIRECT
+  - geoip:
+      match: CN
+      policy: DIRECT
+  - default:
+      policy: REJECT
 mitm:
-    ca_p12: egern.p12
-    ca_passphrase: egern
-    hostnames:
-        includes:
-            - setup.icloud.com
-            - app-analytics-services.com
+  ca_p12: egern.p12
+  ca_passphrase: egern
+  hostnames:
+    includes:
+      - setup.icloud.com
+      - app-analytics-services.com
 modules:
-    - url: https://raw.githubusercontent.com/ybb963416867/surge_pannel/refs/heads/main/main/pannel/IP-Quality.sgmodule
-      enabled: true
-    - url: https://yfamilys.com/module/qmxs.module
-      enabled: true
-    - url: https://raw.githubusercontent.com/sub-store-org/Sub-Store/master/config/Egern.yaml
-      enabled: true
-    - url: https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/modules/script-hub.surge.sgmodule
-      enabled: true
-    - url: https://github.com/NSRingo/WeatherKit/releases/latest/download/iRingo.WeatherKit.sgmodule
-      enabled: true
-    - url: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/Egern/Module/Spotify.yaml
-      enabled: true
-    - url: https://raw.githubusercontent.com/Maasea/sgmodule/master/YouTube.Enhance.sgmodule
-      enabled: true
-    - url: https://raw.githubusercontent.com/Yu9191/Rewrite/refs/heads/main/KuGou.sgmodule
-      enabled: true
-    - url: https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/Kuwo/kuwo.sgmodule
-      enabled: true
-    - url: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/Egern/Module/Xueqiu.yaml
-      enabled: true
-    - url: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/Egern/Module/EcommerceAdBlock.yaml
-      enabled: true
-    - url: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/Egern/Module/MusicAdBlock.yaml
-      enabled: true
-    - url: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/Egern/Module/VideoAdBlock.yaml
-      enabled: true
-    - url: https://raw.githubusercontent.com/app2smile/rules/master/module/bilibili.sgmodule
-      enabled: true
+  - name: IP纯净度
+    url: https://raw.githubusercontent.com/ybb963416867/surge_pannel/refs/heads/main/main/pannel/IP-Quality.sgmodule
+    enabled: true
+  - url: https://yfamilys.com/module/qmxs.module
+    enabled: true
+  - name: Sub-Store
+    url: https://raw.githubusercontent.com/sub-store-org/Sub-Store/master/config/Egern.yaml
+    enabled: true
+  - name: ScriptHub
+    url: https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/modules/script-hub.surge.sgmodule
+    enabled: true
+  - name: WeatherKit
+    url: https://github.com/NSRingo/WeatherKit/releases/latest/download/iRingo.WeatherKit.sgmodule
+    enabled: true
+  - name: Spotify
+    url: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/Egern/Module/Spotify.yaml
+    enabled: true
+  - name: YouTube Enhance
+    url: https://raw.githubusercontent.com/Maasea/sgmodule/master/YouTube.Enhance.sgmodule
+    enabled: true
+  - name: KuGou
+    url: https://raw.githubusercontent.com/Yu9191/Rewrite/refs/heads/main/KuGou.sgmodule
+    enabled: true
+  - name: KuWo
+    url: https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/Kuwo/kuwo.sgmodule
+    enabled: true
+  - name: 雪球去广告
+    url: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/Egern/Module/Xueqiu.yaml
+    enabled: true
+  - name: 综合电商去广告
+    url: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/Egern/Module/EcommerceAdBlock.yaml
+    enabled: true
+  - name: 地图三合一去广告
+    url: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/Egern/Module/MapAdBlock.yaml
+    enabled: true
+  - name: 差旅出行去广告
+    url: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/Egern/Module/TravelAdBlock.yaml
+    enabled: true
+  - name: 音乐流媒体去广告
+    url: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/Egern/Module/MusicAdBlock.yaml
+    enabled: true
+  - name: 视频流媒体去广告
+    url: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/Egern/Module/VideoAdBlock.yaml
+    enabled: true
+  - name: BiliBili去广告
+    url: https://raw.githubusercontent.com/app2smile/rules/master/module/bilibili.sgmodule
+    enabled: true
