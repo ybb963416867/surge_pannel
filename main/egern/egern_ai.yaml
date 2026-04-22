@@ -140,7 +140,7 @@ policy_groups:
               - 🇯🇵 日本节点
               - 🇨🇳 台湾节点
           flatten: true
-          icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Crypto.png
+          icon: https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/btc.png
     - select:
           name: 国外媒体
           policies:
@@ -151,7 +151,7 @@ policy_groups:
               - 🇯🇵 日本节点
               - 🇨🇳 台湾节点
           flatten: true
-          icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/GlobalMedia.png
+          icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/YouTube.png
     - select:
           name: 国内媒体
           policies:
@@ -162,7 +162,7 @@ policy_groups:
               - 🇯🇵 日本节点
               - 🇨🇳 台湾节点
           flatten: true
-          icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/DomesticMedia.png
+          icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/DomesticMedia.png
     - select:
           name: 微软服务
           policies:
@@ -195,7 +195,7 @@ policy_groups:
               - 🇯🇵 日本节点
               - 🇨🇳 台湾节点
           flatten: true
-          icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Game.png
+          icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Game.png
     - select:
           name: WeChat
           policies:
