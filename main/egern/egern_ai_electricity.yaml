@@ -177,73 +177,43 @@ policy_groups:
   - select:
       name: 谷歌服务
       policies:
-        - 🇺🇲 美国节点
-        - 🇭🇰 香港节点
-        - 🇺🇲 美国节点
-        - 🇸🇬 新加坡节点
-        - 🇯🇵 日本节点
-        - 🇨🇳 台湾节点
+        - ✈️ 我的节点
       flatten: false
       icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Google.png
       hidden: false
   - select:
       name: 智能助理
       policies:
-        - 🇺🇲 美国节点
-        - 🇭🇰 香港节点
-        - 🇺🇲 美国节点
-        - 🇸🇬 新加坡节点
-        - 🇯🇵 日本节点
-        - 🇨🇳 台湾节点
+        - ✈️ 我的节点
       flatten: false
       icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/ChatGPT.png
       hidden: false
   - select:
       name: GitHub
       policies:
-        - 🇺🇲 美国节点
-        - 🇭🇰 香港节点
-        - 🇺🇲 美国节点
-        - 🇸🇬 新加坡节点
-        - 🇯🇵 日本节点
-        - 🇨🇳 台湾节点
-      flatten: false
+        - Proxy
+      flatten: true
       icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/GitHub.png
       hidden: false
   - select:
       name: 电报信息
       policies:
-        - 🇨🇳 台湾节点
-        - 🇺🇲 美国节点
-        - 🇭🇰 香港节点
-        - 🇺🇲 美国节点
-        - 🇸🇬 新加坡节点
-        - 🇯🇵 日本节点
-      flatten: false
+        - Proxy
+      flatten: true
       icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Telegram.png
       hidden: false
   - select:
       name: Crypto
       policies:
-        - 🇺🇲 美国节点
-        - 🇭🇰 香港节点
-        - 🇺🇲 美国节点
-        - 🇸🇬 新加坡节点
-        - 🇯🇵 日本节点
         - 🇨🇳 台湾节点
-      flatten: false
+      flatten: true
       icon: https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/btc.png
       hidden: false
   - select:
       name: 国外媒体
       policies:
-        - 🇺🇲 美国节点
-        - 🇭🇰 香港节点
-        - 🇺🇲 美国节点
-        - 🇸🇬 新加坡节点
-        - 🇯🇵 日本节点
-        - 🇨🇳 台湾节点
-      flatten: false
+        - Proxy
+      flatten: true
       icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/YouTube.png
       hidden: false
   - select:
@@ -256,13 +226,8 @@ policy_groups:
   - select:
       name: 微软服务
       policies:
-        - 🇺🇲 美国节点
-        - 🇭🇰 香港节点
-        - 🇺🇲 美国节点
-        - 🇸🇬 新加坡节点
-        - 🇯🇵 日本节点
-        - 🇨🇳 台湾节点
-      flatten: false
+        - Proxy
+      flatten: true
       icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Microsoft.png
       hidden: false
   - select:
@@ -276,6 +241,7 @@ policy_groups:
   - select:
       name: 游戏平台
       policies:
+        - Proxy
         - DIRECT
       flatten: false
       icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Game.png
@@ -415,7 +381,7 @@ rules:
       match: CN
       policy: DIRECT
   - default:
-      policy: REJECT
+      policy: DIRECT
 mitm:
   ca_p12: egern.p12
   ca_passphrase: egern
