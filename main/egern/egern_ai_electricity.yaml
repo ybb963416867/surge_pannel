@@ -317,7 +317,7 @@ policy_groups:
 rules:
 - rule_set:
     name: Gemini
-    match: https://raw.githubusercontent.com/ybb963416867/surge_pannel/refs/heads/main/main/Gemini.list
+    match: https://raw.githubusercontent.com/ybb963416867/surge_pannel/refs/heads/main/main/rule/Gemini.list
     policy: Gemini
     disabled: false
 - rule_set:
