@@ -221,7 +221,7 @@ policy_groups:
     policies:
     - Proxy
     flatten: true
-    icon: https://raw.githubusercontent.com/ybb963416867/surge_pannel/main/main/img/netflix_white.png
+    icon: https://raw.githubusercontent.com/ybb963416867/surge_pannel/main/main/img/netflix_white1.png
     hidden: false
 - select:
     name: YouTube
