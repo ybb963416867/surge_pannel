@@ -231,13 +231,6 @@ policy_groups:
     icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/YouTube.png
     hidden: false
 - select:
-    name: 国内媒体
-    policies:
-    - DIRECT
-    flatten: true
-    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/DomesticMedia.png
-    hidden: false
-- select:
     name: 微软服务
     policies:
     - Proxy
@@ -373,9 +366,6 @@ rules:
 - rule_set:
     match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/GamePlatforms.list
     policy: 游戏平台
-- rule_set:
-    match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/ChinaMedia.list
-    policy: 国内媒体
 - rule_set:
     match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/GlobalMedia.list
     policy: 国外媒体
