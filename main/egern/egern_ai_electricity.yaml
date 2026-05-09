@@ -260,18 +260,6 @@ policy_groups:
     flatten: false
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Game.png
     hidden: false
-- select:
-    name: WeChat
-    policies:
-    - DIRECT
-    - 🇭🇰 香港节点
-    - 🇺🇲 美国节点
-    - 🇸🇬 新加坡节点
-    - 🇯🇵 日本节点
-    - 🇨🇳 台湾节点
-    flatten: false
-    icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/WeChat.png
-    hidden: false
 - auto_test:
     name: 🇭🇰 香港节点
     policies:
@@ -386,9 +374,6 @@ rules:
     match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/GamePlatforms.list
     policy: 游戏平台
 - rule_set:
-    match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/WeChat.list
-    policy: WeChat
-- rule_set:
     match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/ChinaMedia.list
     policy: 国内媒体
 - rule_set:
@@ -397,9 +382,6 @@ rules:
 - rule_set:
     match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Proxy.list
     policy: Proxy
-- rule_set:
-    match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/China.list
-    policy: DIRECT
 - rule_set:
     match: LAN
     policy: DIRECT
