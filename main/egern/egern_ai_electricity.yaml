@@ -221,6 +221,13 @@ policy_groups:
     policies:
     - Proxy
     flatten: true
+    icon: https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/netflix.svg
+    hidden: false
+- select:
+    name: YouTube
+    policies:
+    - Proxy
+    flatten: true
     icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/YouTube.png
     hidden: false
 - select:
@@ -367,6 +374,10 @@ rules:
 - rule_set:
     match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Google.list
     policy: Gemini
+    disabled: false
+- rule_set:
+    match: https://raw.githubusercontent.com/Loon0x00/LoonLiteRules/main/proxy/YouTube.list
+    policy: YouTube
     disabled: false
 - rule_set:
     match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Telegram.list
