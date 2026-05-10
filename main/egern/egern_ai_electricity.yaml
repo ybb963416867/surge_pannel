@@ -298,8 +298,6 @@ policy_groups:
     type: select
     urls:
     - https://sub.store/download/collection/AllServer?target=Egern
-    urls_disabled:
-    - https://www.jafi25718.xyz/jafi/2512?token=8d53b9fbd690c3dc655587485cf88415
     update_interval: 86400
     hidden: false
 rules:
