@@ -1,0 +1,383 @@
+# > Google.list（Google 服务规则集）
+# - 分类：Google 核心服务、系统组件、平台 API
+# - 来源：官方文档 / 本地流量行为分析 / 手动校验 / 持续自维护
+# - 特征：覆盖 Google 搜索、Gmail、Android 系统服务与开发者 API 等核心域名
+# - 注意：广告识别相关域名已独立归类至 AdDomain.list，未包含在本规则中
+# - 用途：本规则集用于防御性安全研究，禁止用于任何非法用途
+# - 维护：https://github.com/Thoseyearsbrian/Aegis
+# - 更新时间：2026-05-10
+# - 校对时间：2026-05-10
+
+# > Google Regional Search Entrypoints（Google 各地区本地化搜索入口）
+# - 校对时间：2026-05-09
+
+DOMAIN-SUFFIX,google.com # Google 全球搜索主站
+DOMAIN-SUFFIX,google.com.hk # Google 香港地区搜索入口
+DOMAIN-SUFFIX,google.com.sg # Google 新加坡地区搜索入口
+DOMAIN-SUFFIX,google.co.jp # Google 日本地区搜索入口
+DOMAIN-SUFFIX,google.co.kr # Google 韩国地区搜索入口
+DOMAIN-SUFFIX,google.co.uk # Google 英国地区搜索入口
+DOMAIN-SUFFIX,google.fr # Google 法国地区搜索入口
+DOMAIN-SUFFIX,google.de # Google 德国地区搜索入口
+DOMAIN-SUFFIX,google.gr # Google 希腊地区搜索入口
+DOMAIN-SUFFIX,google.it # Google 意大利地区搜索入口
+DOMAIN-SUFFIX,google.es # Google 西班牙地区搜索入口
+DOMAIN-SUFFIX,google.nl # Google 荷兰地区搜索入口
+DOMAIN-SUFFIX,google.se # Google 瑞典地区搜索入口
+DOMAIN-SUFFIX,google.no # Google 挪威地区搜索入口
+DOMAIN-SUFFIX,google.fi # Google 芬兰地区搜索入口
+DOMAIN-SUFFIX,google.pl # Google 波兰地区搜索入口
+DOMAIN-SUFFIX,google.cz # Google 捷克地区搜索入口
+DOMAIN-SUFFIX,google.ca # Google 加拿大地区搜索入口（英语/法语）
+DOMAIN-SUFFIX,google.com.au # Google 澳大利亚地区搜索入口
+DOMAIN-SUFFIX,google.co.nz # Google 新西兰地区搜索入口
+DOMAIN-SUFFIX,google.com.br # Google 巴西地区搜索入口
+DOMAIN-SUFFIX,google.com.mx # Google 墨西哥地区搜索入口
+DOMAIN-SUFFIX,google.com.ar # Google 阿根廷地区搜索入口
+DOMAIN-SUFFIX,google.cl # Google 智利地区搜索入口
+DOMAIN-SUFFIX,google.co.in # Google 印度地区搜索入口
+DOMAIN-SUFFIX,google.co.id # Google 印度尼西亚地区搜索入口
+DOMAIN-SUFFIX,google.com.my # Google 马来西亚地区搜索入口
+DOMAIN-SUFFIX,google.com.ph # Google 菲律宾地区搜索入口
+DOMAIN-SUFFIX,google.co.th # Google 泰国地区搜索入口
+DOMAIN-SUFFIX,google.com.vn # Google 越南地区搜索入口
+DOMAIN-SUFFIX,google.ru # Google 俄罗斯地区搜索入口
+DOMAIN-SUFFIX,google.cn # Google 中国历史域名
+
+# > Google Platform Infrastructure（Google 平台基础服务）
+# - 校对时间：2026-03-06
+
+DOMAIN-SUFFIX,gmail.com # Gmail 邮箱服务
+DOMAIN-SUFFIX,googlemail.com # Gmail 历史备用域名
+DOMAIN-SUFFIX,g.co # Google 官方短链接
+DOMAIN-SUFFIX,goo.gle # Google 官方短链接
+DOMAIN-SUFFIX,abc.xyz # Alphabet 公司官网
+DOMAIN-SUFFIX,research.google # Google Research 研究项目
+DOMAIN-SUFFIX,withgoogle.com # Google 官方品牌项目平台
+DOMAIN-SUFFIX,grow.google # Google Grow 学习平台
+DOMAIN-SUFFIX,domains.google # Google 域名服务官网
+DOMAIN-SUFFIX,tools.google.com # Google 工具服务域名
+DOMAIN-SUFFIX,googledomains.com # Google Domains 历史官网入口
+
+# > Google APIs & Backend Services（Google 后端接口服务）
+# - 校对时间：2026-05-10
+
+DOMAIN-SUFFIX,googleapis.com # Google 官方 API 网关
+DOMAIN-SUFFIX,clientservices.googleapis.com # Google 客户端服务接口
+DOMAIN-SUFFIX,proto.googleapis.com # Google API Protobuf 传输服务
+DOMAIN-SUFFIX,notifications-pa.googleapis.com # Google 通知推送接口
+DOMAIN-SUFFIX,content-autofill.googleapis.com # Google 自动填充服务接口
+DOMAIN-SUFFIX,growth-pa.googleapis.com # Google 产品增长接口
+DOMAIN-SUFFIX,peoplestack-pa.googleapis.com # Google People 数据服务接口
+DOMAIN-SUFFIX,taskassist-pa.googleapis.com # Google Task Assist 接口
+DOMAIN-SUFFIX,subscriptionsmobile-pa.googleapis.com # Google 移动订阅接口
+DOMAIN-SUFFIX,addons-pa.googleapis.com # Google Add-ons 插件接口
+
+# > Google Workspace（Google 办公与协作平台）
+# - 校对时间：2026-03-06
+
+DOMAIN-SUFFIX,docs.google.com # Google Docs 在线文档
+DOMAIN-SUFFIX,drive.google.com # Google Drive 文件存储
+DOMAIN-SUFFIX,slides.google.com # Google Slides 演示文稿
+DOMAIN-SUFFIX,forms.google.com # Google Forms 在线表单
+DOMAIN-SUFFIX,sheets.google.com # Google Sheets 在线表格
+DOMAIN-SUFFIX,calendar.google.com # Google Calendar 日历服务
+DOMAIN-SUFFIX,meet.google.com # Google Meet 视频会议
+DOMAIN-SUFFIX,chat.google.com # Google Chat 即时通讯
+DOMAIN-SUFFIX,keep.google.com # Google Keep 笔记服务
+DOMAIN-SUFFIX,classroom.google.com # Google Classroom 教育平台
+DOMAIN-SUFFIX,workspace.google.com # Google Workspace 控制台
+
+# > Google Media Platform（Google 媒体平台服务）
+# - 校对时间：2026-03-06
+
+DOMAIN-SUFFIX,photos.google.com # Google Photos 图片服务
+DOMAIN-SUFFIX,ggpht.com # Google 图片资源 CDN
+DOMAIN-SUFFIX,yt3.ggpht.com # YouTube 头像与封面资源
+DOMAIN-SUFFIX,lh3.googleusercontent.com # Google Photos 图片资源
+
+# > YouTube Platform（YouTube 视频平台）
+# - 校对时间：2026-03-06
+
+DOMAIN-SUFFIX,youtube.com # YouTube 主站
+DOMAIN-SUFFIX,youtu.be # YouTube 短链接
+DOMAIN-SUFFIX,youtube-nocookie.com # YouTube 无 Cookie 嵌入播放
+DOMAIN-SUFFIX,ytimg.com # YouTube 静态资源
+DOMAIN-SUFFIX,googlevideo.com # YouTube 视频 CDN
+DOMAIN-SUFFIX,s.youtube.com # YouTube 服务接口
+
+# > Chrome & Chromium（Chrome 浏览器生态）
+# - 校对时间：2026-05-10
+
+DOMAIN-SUFFIX,chrome.com # Chrome 浏览器官网
+DOMAIN-SUFFIX,googlechrome.com # Chrome 产品站点
+DOMAIN-SUFFIX,chromewebstore.com # Chrome 扩展商店
+DOMAIN-SUFFIX,chromecast.com # Chromecast 服务
+DOMAIN-SUFFIX,chromium.org # Chromium 项目官网
+DOMAIN-SUFFIX,chromestatus.com # Chromium 功能状态
+DOMAIN-SUFFIX,chromium.googlesource.com # Chromium 源码托管
+DOMAIN-SUFFIX,crbug.com # Chromium Bug 跟踪
+DOMAIN-SUFFIX,clients2.google.com # Google 客户端更新服务域名
+
+# > Android & Google Play（Android 与应用分发）
+# - 校对时间：2026-05-10
+
+DOMAIN-SUFFIX,android.com # Android 官方站点
+DOMAIN-SUFFIX,googleplay.com # Google Play 官网
+DOMAIN-SUFFIX,play.google.com # Google Play 应用服务
+DOMAIN-SUFFIX,android.clients.google.com # Android 客户端服务域名
+DOMAIN-SUFFIX,update.googleapis.com # Android 与 Google 客户端更新接口
+DOMAIN-SUFFIX,play-lh.googleusercontent.com # Google Play 应用资源 CDN
+DOMAIN-SUFFIX,gvt1.com # Google CDN 内容分发
+DOMAIN-SUFFIX,gvt2.com # Google CDN 内容分发
+
+# > Google Cloud Platform（Google 云服务）
+# - 校对时间：2026-03-06
+
+DOMAIN-SUFFIX,cloud.google.com # Google Cloud 平台
+DOMAIN-SUFFIX,appspot.com # Google App Engine 托管
+DOMAIN-SUFFIX,appengine.google.com # App Engine 控制台
+DOMAIN-SUFFIX,cloudfunctions.net # Google Cloud Functions
+DOMAIN-SUFFIX,gcr.io # Google Container Registry
+DOMAIN-SUFFIX,storage.googleapis.com # Google Cloud Storage
+DOMAIN-SUFFIX,commondatastorage.googleapis.com # Google 公共数据存储
+DOMAIN-SUFFIX,storage.cloud.google.com # Cloud Storage 控制台
+DOMAIN-SUFFIX,run.app # Google Cloud Run 服务域名
+
+# > Google Developer Platform（Google 开发者平台）
+# - 校对时间：2026-03-06
+
+DOMAIN-SUFFIX,developers.google.com # Google 开发者文档
+DOMAIN-SUFFIX,google.dev # Google 开发者社区
+DOMAIN-SUFFIX,web.dev # Web 开发最佳实践平台
+
+# > Google Fonts & Assets（Google 字体与静态资源）
+# - 校对时间：2026-03-06
+
+DOMAIN-SUFFIX,fonts.googleapis.com # Google Fonts API
+DOMAIN-SUFFIX,fonts.gstatic.com # Google 字体 CDN
+DOMAIN-SUFFIX,gstatic.com # Google 静态资源 CDN
+DOMAIN-SUFFIX,dl.google.com # Google 下载服务域名
+DOMAIN-SUFFIX,cdn.ampproject.org # Google AMP CDN
+
+# > Google Identity & Security（Google 身份与安全服务）
+# - 校对时间：2026-05-10
+
+DOMAIN-SUFFIX,accounts.google.com # Google 账号认证
+DOMAIN-SUFFIX,oauth2.googleapis.com # Google OAuth2 授权
+DOMAIN-SUFFIX,oauthaccountmanager.googleapis.com # Google OAuth 账户管理接口
+DOMAIN-SUFFIX,dns.google # Google 加密 DNS 服务
+DOMAIN-SUFFIX,recaptcha.net # Google reCAPTCHA 验证服务
+DOMAIN-SUFFIX,google-ohttp-relay-safebrowsing.fastly-edge.com # Google Safe Browsing 隐私查询中继
+
+# > Google Merchant Center（Google 商户平台）
+# - 校对时间：2026-03-06
+
+DOMAIN-SUFFIX,merchants.google.com # Merchant Center 控制台
+DOMAIN-SUFFIX,merchant-center.googleapis.com # Merchant Center API
+DOMAIN-SUFFIX,shoppingcontent.googleapis.com # Google Shopping Content API
+
+# > Google Custom Search（Google 自定义搜索服务）
+# - 校对时间：2026-03-06
+
+DOMAIN-SUFFIX,cse.google.com # Google Custom Search 接口
+DOMAIN-SUFFIX,cse.googleusercontent.com # CSE 静态资源
+DOMAIN-SUFFIX,programmablesearchengine.google.com # Programmable Search 控制台
+
+# > Google Blogger Platform（Google Blogger 博客平台）
+# - 校对时间：2026-03-06
+
+DOMAIN-SUFFIX,blogblog.com # Blogger 基础服务域名
+DOMAIN-SUFFIX,blogger.com # Blogger 官方站点
+DOMAIN-SUFFIX,resources.blogblog.com # Blogger 静态资源
+DOMAIN-SUFFIX,blogger.googleusercontent.com # Blogger 媒体资源
+DOMAIN-SUFFIX,blogger.googleblog.com # Blogger 官方博客
+DOMAIN-SUFFIX,bp.blogspot.com # Blogspot 图片 CDN
+
+# > Google Public DNS（Google 公共 DNS 服务）
+# - 校对时间：2026-03-06
+
+IP-CIDR,8.8.8.8/32 # Google Public DNS
+IP-CIDR,8.8.4.4/32 # Google Public DNS 备用地址
+IP-CIDR6,2001:4860:4860::8888/128 # Google Public DNS IPv6
+IP-CIDR6,2001:4860:4860::8844/128 # Google Public DNS IPv6 备用地址
+
+# > Google Fiber / GFiber（Google 宽带服务）
+# - 校对时间：2026-03-27
+
+DOMAIN-SUFFIX,fiber.google.com # Google Fiber 官方服务域名
+DOMAIN-SUFFIX,gigabit.google.com # Google Fiber 历史入口域名
+DOMAIN-SUFFIX,fiberstatus.com # Google Fiber 服务状态页面域名
+DOMAIN-SUFFIX,gfiber.com # GFiber 官方服务域名
+DOMAIN-SUFFIX,gfiber.speedtestcustom.com # GFiber 定制测速服务域名
+
+# > Google Mail Infrastructure Network（Google 邮件基础设施网络）
+# - 数据来源：dig TXT _netblocks.google.com
+# - 说明：Google 官方 SPF 邮件发送网络段
+# - 校对时间：2026-03-06
+
+IP-CIDR,74.125.0.0/16 # Google Mail 发送网络（SPF）
+IP-CIDR,209.85.128.0/17 # Google Mail 发送网络（SPF）
+
+# > Google Network IPv4（Google 官方 IPv4 网络段）
+# - 数据来源：https://www.gstatic.com/ipranges/goog.json
+# - 校对时间：2026-03-06
+
+IP-CIDR,8.8.4.0/24 # Google 官方 IPv4 网络段
+IP-CIDR,8.8.8.0/24 # Google 官方 IPv4 网络段
+IP-CIDR,8.34.208.0/20 # Google 官方 IPv4 网络段
+IP-CIDR,8.35.192.0/20 # Google 官方 IPv4 网络段
+IP-CIDR,8.228.0.0/14 # Google 官方 IPv4 网络段
+IP-CIDR,8.232.0.0/14 # Google 官方 IPv4 网络段
+IP-CIDR,8.236.0.0/15 # Google 官方 IPv4 网络段
+IP-CIDR,23.236.48.0/20 # Google 官方 IPv4 网络段
+IP-CIDR,23.251.128.0/19 # Google 官方 IPv4 网络段
+IP-CIDR,34.0.0.0/15 # Google 官方 IPv4 网络段
+IP-CIDR,34.2.0.0/16 # Google 官方 IPv4 网络段
+IP-CIDR,34.3.0.0/23 # Google 官方 IPv4 网络段
+IP-CIDR,34.3.3.0/24 # Google 官方 IPv4 网络段
+IP-CIDR,34.3.4.0/24 # Google 官方 IPv4 网络段
+IP-CIDR,34.3.8.0/21 # Google 官方 IPv4 网络段
+IP-CIDR,34.3.16.0/20 # Google 官方 IPv4 网络段
+IP-CIDR,34.3.32.0/19 # Google 官方 IPv4 网络段
+IP-CIDR,34.3.64.0/18 # Google 官方 IPv4 网络段
+IP-CIDR,34.4.0.0/14 # Google 官方 IPv4 网络段
+IP-CIDR,34.8.0.0/13 # Google 官方 IPv4 网络段
+IP-CIDR,34.16.0.0/12 # Google 官方 IPv4 网络段
+IP-CIDR,34.32.0.0/11 # Google 官方 IPv4 网络段
+IP-CIDR,34.64.0.0/10 # Google 官方 IPv4 网络段
+IP-CIDR,34.128.0.0/10 # Google 官方 IPv4 网络段
+IP-CIDR,35.184.0.0/13 # Google 官方 IPv4 网络段
+IP-CIDR,35.192.0.0/14 # Google 官方 IPv4 网络段
+IP-CIDR,35.196.0.0/15 # Google 官方 IPv4 网络段
+IP-CIDR,35.198.0.0/16 # Google 官方 IPv4 网络段
+IP-CIDR,35.199.0.0/17 # Google 官方 IPv4 网络段
+IP-CIDR,35.199.128.0/18 # Google 官方 IPv4 网络段
+IP-CIDR,35.200.0.0/13 # Google 官方 IPv4 网络段
+IP-CIDR,35.208.0.0/12 # Google 官方 IPv4 网络段
+IP-CIDR,35.224.0.0/12 # Google 官方 IPv4 网络段
+IP-CIDR,35.240.0.0/13 # Google 官方 IPv4 网络段
+IP-CIDR,35.252.0.0/14 # Google 官方 IPv4 网络段
+IP-CIDR,64.15.112.0/20 # Google 官方 IPv4 网络段
+IP-CIDR,64.233.160.0/19 # Google 官方 IPv4 网络段
+IP-CIDR,66.102.0.0/20 # Google 官方 IPv4 网络段
+IP-CIDR,66.249.64.0/19 # Google 官方 IPv4 网络段
+IP-CIDR,70.32.128.0/19 # Google 官方 IPv4 网络段
+IP-CIDR,72.14.192.0/18 # Google 官方 IPv4 网络段
+IP-CIDR,74.114.24.0/21 # Google 官方 IPv4 网络段
+IP-CIDR,74.125.0.0/16 # Google 官方 IPv4 网络段
+IP-CIDR,104.154.0.0/15 # Google 官方 IPv4 网络段
+IP-CIDR,104.196.0.0/14 # Google 官方 IPv4 网络段
+IP-CIDR,104.237.160.0/19 # Google 官方 IPv4 网络段
+IP-CIDR,107.167.160.0/19 # Google 官方 IPv4 网络段
+IP-CIDR,107.178.192.0/18 # Google 官方 IPv4 网络段
+IP-CIDR,108.59.80.0/20 # Google 官方 IPv4 网络段
+IP-CIDR,108.170.192.0/18 # Google 官方 IPv4 网络段
+IP-CIDR,108.177.0.0/17 # Google 官方 IPv4 网络段
+IP-CIDR,130.211.0.0/16 # Google 官方 IPv4 网络段
+IP-CIDR,136.22.2.0/23 # Google 官方 IPv4 网络段
+IP-CIDR,136.22.4.0/23 # Google 官方 IPv4 网络段
+IP-CIDR,136.22.8.0/22 # Google 官方 IPv4 网络段
+IP-CIDR,136.22.160.0/20 # Google 官方 IPv4 网络段
+IP-CIDR,136.22.176.0/21 # Google 官方 IPv4 网络段
+IP-CIDR,136.22.184.0/23 # Google 官方 IPv4 网络段
+IP-CIDR,136.22.186.0/24 # Google 官方 IPv4 网络段
+IP-CIDR,136.23.48.0/20 # Google 官方 IPv4 网络段
+IP-CIDR,136.23.64.0/18 # Google 官方 IPv4 网络段
+IP-CIDR,136.64.0.0/11 # Google 官方 IPv4 网络段
+IP-CIDR,136.107.0.0/16 # Google 官方 IPv4 网络段
+IP-CIDR,136.108.0.0/14 # Google 官方 IPv4 网络段
+IP-CIDR,136.112.0.0/13 # Google 官方 IPv4 网络段
+IP-CIDR,136.120.0.0/22 # Google 官方 IPv4 网络段
+IP-CIDR,136.124.0.0/15 # Google 官方 IPv4 网络段
+IP-CIDR,142.250.0.0/15 # Google 官方 IPv4 网络段
+IP-CIDR,146.148.0.0/17 # Google 官方 IPv4 网络段
+IP-CIDR,162.120.128.0/17 # Google 官方 IPv4 网络段
+IP-CIDR,162.216.148.0/22 # Google 官方 IPv4 网络段
+IP-CIDR,162.222.176.0/21 # Google 官方 IPv4 网络段
+IP-CIDR,172.110.32.0/21 # Google 官方 IPv4 网络段
+IP-CIDR,172.217.0.0/16 # Google 官方 IPv4 网络段
+IP-CIDR,172.253.0.0/16 # Google 官方 IPv4 网络段
+IP-CIDR,173.194.0.0/16 # Google 官方 IPv4 网络段
+IP-CIDR,173.255.112.0/20 # Google 官方 IPv4 网络段
+IP-CIDR,192.104.160.0/23 # Google 官方 IPv4 网络段
+IP-CIDR,192.158.28.0/22 # Google 官方 IPv4 网络段
+IP-CIDR,192.178.0.0/15 # Google 官方 IPv4 网络段
+IP-CIDR,193.186.4.0/24 # Google 官方 IPv4 网络段
+IP-CIDR,199.36.154.0/23 # Google 官方 IPv4 网络段
+IP-CIDR,199.36.156.0/24 # Google 官方 IPv4 网络段
+IP-CIDR,199.192.112.0/22 # Google 官方 IPv4 网络段
+IP-CIDR,199.223.232.0/21 # Google 官方 IPv4 网络段
+IP-CIDR,207.175.0.0/16 # Google 官方 IPv4 网络段
+IP-CIDR,207.223.160.0/20 # Google 官方 IPv4 网络段
+IP-CIDR,208.65.152.0/22 # Google 官方 IPv4 网络段
+IP-CIDR,208.68.108.0/22 # Google 官方 IPv4 网络段
+IP-CIDR,208.81.188.0/22 # Google 官方 IPv4 网络段
+IP-CIDR,208.117.224.0/19 # Google 官方 IPv4 网络段
+IP-CIDR,209.85.128.0/17 # Google 官方 IPv4 网络段
+IP-CIDR,216.58.192.0/19 # Google 官方 IPv4 网络段
+IP-CIDR,216.73.80.0/20 # Google 官方 IPv4 网络段
+IP-CIDR,216.239.32.0/19 # Google 官方 IPv4 网络段
+IP-CIDR,216.252.220.0/22 # Google 官方 IPv4 网络段
+
+# > Google Network IPv6（Google 官方 IPv6 网络段）
+# - 数据来源：https://www.gstatic.com/ipranges/goog.json
+# - 校对时间：2026-03-06
+
+IP-CIDR6,2001:4860::/32 # Google 官方 IPv6 网络段
+IP-CIDR6,2404:6800::/32 # Google 官方 IPv6 网络段
+IP-CIDR6,2404:f340::/32 # Google 官方 IPv6 网络段
+IP-CIDR6,2600:1900::/28 # Google 官方 IPv6 网络段
+IP-CIDR6,2605:ef80::/32 # Google 官方 IPv6 网络段
+IP-CIDR6,2606:40::/32 # Google 官方 IPv6 网络段
+IP-CIDR6,2606:73c0::/32 # Google 官方 IPv6 网络段
+IP-CIDR6,2607:1c0:241:40::/60 # Google 官方 IPv6 网络段
+IP-CIDR6,2607:1c0:300::/40 # Google 官方 IPv6 网络段
+IP-CIDR6,2607:f8b0::/32 # Google 官方 IPv6 网络段
+IP-CIDR6,2620:11a:a000::/40 # Google 官方 IPv6 网络段
+IP-CIDR6,2620:120:e000::/40 # Google 官方 IPv6 网络段
+IP-CIDR6,2800:3f0::/32 # Google 官方 IPv6 网络段
+IP-CIDR6,2a00:1450::/32 # Google 官方 IPv6 网络段
+IP-CIDR6,2c0f:fb50::/32 # Google 官方 IPv6 网络段
+
+# > Google Advertising Services（Google 广告与营销服务）
+# - 校对时间：2026-03-06
+
+DOMAIN-SUFFIX,pagead2.googlesyndication.com # Google Ads 投放服务
+DOMAIN-SUFFIX,googleads.g.doubleclick.net # Google Ads 服务接口
+DOMAIN-SUFFIX,tpc.googlesyndication.com # Google Ads 内容服务
+DOMAIN-SUFFIX,securepubads.g.doubleclick.net # Google Ads 广告调度
+DOMAIN-SUFFIX,g.doubleclick.net # DoubleClick 广告服务
+DOMAIN-SUFFIX,googleadservices.com # Google Ads 跟踪服务
+DOMAIN-SUFFIX,googleadapis.l.google.com # Google Ads API
+DOMAIN-SUFFIX,googleadservices-cn.com # Google Ads 中国接口
+DOMAIN-SUFFIX,adservice.google.com # Google Ads 跳转服务
+DOMAIN-SUFFIX,adservice.google.cn # Google Ads 中国跳转
+DOMAIN-SUFFIX,googleads.g.doubleclick.com # Google Ads 服务
+DOMAIN-SUFFIX,adtrafficquality.google # Google Ads 流量质量检测
+DOMAIN-SUFFIX,googletagservices-cn.com # Google Ads 标签服务
+DOMAIN-SUFFIX,pagead.l.google.com # Google 页面广告服务
+DOMAIN-SUFFIX,partnerad.l.google.com # Google 合作广告服务
+DOMAIN-SUFFIX,wintricksbanner.googlepages.com # Google Page Creator 历史遗留域名
+DOMAIN-SUFFIX,googletagservices.com # Google Tag 服务
+DOMAIN-SUFFIX,googlesyndication.com # Google 广告分发与内容投放网络
+DOMAIN-SUFFIX,googletagmanager.com # Google Tag Manager 标签管理平台
+DOMAIN-SUFFIX,ade.googlesyndication.com # Google Ads 实验服务
+DOMAIN-SUFFIX,doubleclick.net # DoubleClick 广告平台
+
+# > 已列入AdDomain.list明细:
+
+# DOMAIN-SUFFIX,safeframe.googlesyndication.com # Google SafeFrame 广告容器域名
+# DOMAIN-SUFFIX,static.googleadsserving.cn # Google 广告投放域名
+# DOMAIN-SUFFIX,ad.doubleclick.net # DoubleClick 广告服务域名
+# DOMAIN-SUFFIX,doubleclick-cn.net # DoubleClick 广告服务域名
+# DOMAIN-SUFFIX,2mdn.net # DoubleClick 广告素材分发域名
+# DOMAIN-SUFFIX,fls.doubleclick.net # DoubleClick 广告追踪域名
+# DOMAIN-SUFFIX,cm.g.doubleclick.net # DoubleClick 广告标识同步域名
+
+# > 已列入 BehaviorDomain.list明细:
+# - 校对时间：2026-03-06
+
+# DOMAIN-SUFFIX,merchant-center-analytics.goog # Merchant Center 分析
+# DOMAIN-SUFFIX,video-stats.video.google.com # YouTube 广告统计
+# DOMAIN-SUFFIX,google-analytics.com # Google Analytics 行为分析与访问统计服务

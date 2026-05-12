@@ -302,11 +302,6 @@ policy_groups:
     hidden: false
 rules:
 - rule_set:
-    name: Gemini
-    match: https://raw.githubusercontent.com/ybb963416867/surge_pannel/refs/heads/main/main/rule/Gemini.list
-    policy: Gemini
-    disabled: false
-- rule_set:
     match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Background_Block.list
     policy: REJECT
 - rule_set:
@@ -351,8 +346,12 @@ rules:
     match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Microsoft.list
     policy: 微软服务
 - rule_set:
-    match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Google.list
+    match: https://raw.githubusercontent.com/ybb963416867/surge_pannel/refs/heads/main/main/rule/Gemini.list
     policy: Gemini
+    disabled: false
+- rule_set:
+    match: https://raw.githubusercontent.com/ybb963416867/surge_pannel/refs/heads/main/main/rule/Google.list
+    policy: Google
     disabled: false
 - rule_set:
     match: https://raw.githubusercontent.com/Loon0x00/LoonLiteRules/main/proxy/YouTube.list
