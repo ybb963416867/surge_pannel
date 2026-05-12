@@ -351,7 +351,7 @@ rules:
     disabled: false
 - rule_set:
     match: https://raw.githubusercontent.com/ybb963416867/surge_pannel/refs/heads/main/main/rule/Google.list
-    policy: Google
+    policy: 谷歌服务
     disabled: false
 - rule_set:
     match: https://raw.githubusercontent.com/Loon0x00/LoonLiteRules/main/proxy/YouTube.list
