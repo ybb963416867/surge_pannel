@@ -430,7 +430,7 @@ modules:
   url: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/Egern/Module/TravelAdBlock.yaml
   enabled: true
 - name: 音乐流媒体去广告
-  url: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/Egern/Module/MusicAdBlock.yaml
+  url: https://raw.githubusercontent.com/ybb963416867/surge_pannel/refs/heads/main/main/module/MusicAdBlock.yaml
   enabled: true
 - name: 视频流媒体去广告
   url: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/Egern/Module/VideoAdBlock.yaml
