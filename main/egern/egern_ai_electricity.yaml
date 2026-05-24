@@ -164,36 +164,25 @@ dns:
       value: Default
 policy_groups:
 - select:
-    name: Gemini
-    policies:
-    - ✈️ 我的节点
-    flatten: true
-    icon: https://raw.githubusercontent.com/lobehub/lobe-icons/refs/heads/master/packages/static-png/dark/gemini-color.png
-    hidden: false
-- select:
-    name: Proxy
-    policies:
-    - 🇸🇬 新加坡节点
-    - 🇨🇳 台湾节点
-    - 🇯🇵 日本节点
-    - 🇺🇲 美国节点
-    - 🇭🇰 香港节点
-    flatten: false
-    icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Global.png
-    hidden: false
-- select:
     name: 谷歌服务
     policies:
-    - Proxy
-    flatten: true
+    - Ai手动选择
+    flatten: false
     icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Google.png
-    hidden: false
+    hidden: true
 - select:
     name: 智能助理
     policies:
-    - ✈️ 我的节点
-    flatten: true
+    - Ai手动选择
+    flatten: false
     icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/ChatGPT.png
+    hidden: true
+- select:
+    name: TikTok
+    policies:
+    - Proxy
+    flatten: true
+    icon: https://raw.githubusercontent.com/ultralytics/assets/main/social/logo-social-tiktok.png
     hidden: false
 - auto_test:
     name: GitHub
@@ -252,6 +241,28 @@ policy_groups:
     - DIRECT
     flatten: false
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Game.png
+    hidden: false
+- select:
+    name: Proxy
+    policies:
+    - 🇸🇬 新加坡节点
+    - 🇨🇳 台湾节点
+    - 🇯🇵 日本节点
+    - 🇺🇲 美国节点
+    - 🇭🇰 香港节点
+    flatten: false
+    icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Global.png
+    hidden: false
+- select:
+    name: Ai手动选择
+    policies:
+    - 🇸🇬 新加坡节点
+    - 🇨🇳 台湾节点
+    - 🇯🇵 日本节点
+    - 🇺🇲 美国节点
+    flatten: true
+    filter: (?i).*(AI|专属|家宽|解锁).*
+    icon: https://raw.githubusercontent.com/lobehub/lobe-icons/refs/heads/master/packages/static-png/dark/gemini-color.png
     hidden: false
 - auto_test:
     name: 🇭🇰 香港节点
@@ -331,6 +342,11 @@ rules:
     policy: REJECT
     disabled: true
 - rule_set:
+    name: TikTok
+    match: https://yfamilys.com/rule/TikTok.list
+    policy: TikTok
+    disabled: false
+- rule_set:
     match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/OpenAI.list
     policy: 智能助理
 - rule_set:
@@ -345,10 +361,6 @@ rules:
 - rule_set:
     match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Microsoft.list
     policy: 微软服务
-- rule_set:
-    match: https://raw.githubusercontent.com/ybb963416867/surge_pannel/refs/heads/main/main/rule/Gemini.list
-    policy: Gemini
-    disabled: false
 - rule_set:
     match: https://raw.githubusercontent.com/ybb963416867/surge_pannel/refs/heads/main/main/rule/Google.list
     policy: 谷歌服务
@@ -388,9 +400,15 @@ mitm:
     includes:
     - setup.icloud.com
     - app-analytics-services.com
+http_captures:
+  includes:
+  - vip.kugou.com
+  - gateway.kugou.com
 widgets:
 - name: 日历
 modules:
+- url: https://raw.githubusercontent.com/Yu9191/Rewrite/e2e48763f1a0c8504d0e61d3f04f1834dbec905a/KuGou.sgmodule
+  enabled: true
 - name: IP纯净度
   url: https://raw.githubusercontent.com/ybb963416867/surge_pannel/refs/heads/main/main/pannel/IP-Quality.sgmodule
   enabled: true
@@ -413,9 +431,6 @@ modules:
   enabled: true
 - name: KuGou
   url: https://raw.githubusercontent.com/Yu9191/Rewrite/refs/heads/main/KuGou.sgmodule
-  enabled: true
-- name: KuWo
-  url: https://raw.githubusercontent.com/Yuheng0101/X/main/Scripts/Kuwo/kuwo.sgmodule
   enabled: true
 - name: 雪球去广告
   url: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/Egern/Module/Xueqiu.yaml
