@@ -164,37 +164,26 @@ dns:
       value: Default
 policy_groups:
 - select:
-    name: 谷歌服务
-    policies:
-    - Ai手动选择
-    flatten: false
-    icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Google.png
-    hidden: true
-- select:
-    name: 智能助理
-    policies:
-    - Ai手动选择
-    flatten: false
-    icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/ChatGPT.png
-    hidden: true
-- select:
     name: TikTok
     policies:
-    - Proxy
+    - 🌹 Proxy（负载均衡）
+    - 🌹 Proxy（手动选择）
     flatten: true
     icon: https://raw.githubusercontent.com/ultralytics/assets/main/social/logo-social-tiktok.png
     hidden: false
 - auto_test:
     name: GitHub
     policies:
-    - Proxy
+    - 🌹 Proxy（负载均衡）
+    - 🌹 Proxy（手动选择）
     flatten: true
     icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/GitHub.png
     hidden: false
 - select:
     name: 电报信息
     policies:
-    - Proxy
+    - 🌹 Proxy（负载均衡）
+    - 🌹 Proxy（手动选择）
     flatten: true
     icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Telegram.png
     hidden: false
@@ -208,21 +197,22 @@ policy_groups:
 - select:
     name: 国外媒体
     policies:
-    - Proxy
+    - 🌹 Proxy（手动选择）
     flatten: true
     icon: https://raw.githubusercontent.com/ybb963416867/surge_pannel/main/main/img/netflix_white1.png
     hidden: false
 - select:
     name: YouTube
     policies:
-    - Proxy
+    - 🌹 Proxy（负载均衡）
+    - 🌹 Proxy（手动选择）
     flatten: true
     icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/YouTube.png
     hidden: false
 - select:
     name: 微软服务
     policies:
-    - Proxy
+    - 🌹 Proxy（手动选择）
     flatten: true
     icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Microsoft.png
     hidden: false
@@ -237,21 +227,10 @@ policy_groups:
 - select:
     name: 游戏平台
     policies:
-    - Proxy
+    - 🌹 Proxy（手动选择）
     - DIRECT
     flatten: false
     icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Game.png
-    hidden: false
-- select:
-    name: Proxy
-    policies:
-    - 🇸🇬 新加坡节点
-    - 🇨🇳 台湾节点
-    - 🇯🇵 日本节点
-    - 🇺🇲 美国节点
-    - 🇭🇰 香港节点
-    flatten: false
-    icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Global.png
     hidden: false
 - select:
     name: Ai手动选择
@@ -304,6 +283,77 @@ policy_groups:
     filter: (🇸🇬)|(新加坡)|(Singapore)|(SG)
     icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Singapore.png
     hidden: false
+- select:
+    name: 智能助理
+    policies:
+    - Ai手动选择
+    flatten: false
+    icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/ChatGPT.png
+    hidden: true
+- select:
+    name: 谷歌服务
+    policies:
+    - Ai手动选择
+    flatten: false
+    icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Google.png
+    hidden: true
+- load_balance:
+    name: 🇺🇲 美国节点（负载均衡）
+    policies:
+    - ✈️ 我的节点
+    flatten: true
+    filter: (🇺🇸)|(美国)|(States)|(US)
+    hidden: true
+- load_balance:
+    name: 🇭🇰 香港节点（负载均衡）
+    policies:
+    - ✈️ 我的节点
+    flatten: true
+    filter: (🇭🇰)|(香港)|(Hong)|(HK)
+    hidden: true
+- load_balance:
+    name: 🇯🇵 日本节点（负载均衡）
+    policies:
+    - ✈️ 我的节点
+    flatten: true
+    filter: (🇯🇵)|(日本)|(Japan)|(JP)
+    hidden: true
+- load_balance:
+    name: 🇨🇳 台湾节点（负载均衡）
+    policies:
+    - ✈️ 我的节点
+    flatten: true
+    filter: (🇨🇳)|(台湾)|(Tai)|(TW)
+    hidden: true
+- load_balance:
+    name: 🇸🇬 新加坡节点（负载均衡）
+    policies:
+    - ✈️ 我的节点
+    flatten: true
+    filter: (🇸🇬)|(新加坡)|(Singapore)|(SG)
+    hidden: true
+- select:
+    name: 🌹 Proxy（手动选择）
+    policies:
+    - 🇸🇬 新加坡节点
+    - 🇨🇳 台湾节点
+    - 🇯🇵 日本节点
+    - 🇺🇲 美国节点
+    - 🇭🇰 香港节点
+    flatten: false
+    icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Global.png
+    hidden: true
+- select:
+    name: 🌹 Proxy（负载均衡）
+    policies:
+    - 🇸🇬 新加坡节点（负载均衡）
+    - 🇨🇳 台湾节点（负载均衡）
+    - 🇯🇵 日本节点（负载均衡）
+    - 🇺🇲 美国节点（负载均衡）
+    - 🇭🇰 香港节点（负载均衡）
+    flatten: false
+    icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Global.png
+    hidden: true
 - external:
     name: ✈️ 我的节点
     type: select
@@ -380,7 +430,7 @@ rules:
     policy: 国外媒体
 - rule_set:
     match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Proxy.list
-    policy: Proxy
+    policy: 🌹 Proxy（手动选择）
 - rule_set:
     match: LAN
     policy: DIRECT
