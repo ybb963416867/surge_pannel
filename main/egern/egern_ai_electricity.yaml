@@ -204,8 +204,7 @@ policy_groups:
 - select:
     name: YouTube
     policies:
-    - 🌹 Proxy（负载均衡）
-    - 🌹 Proxy（手动选择）
+    - 🌹 Proxy
     flatten: true
     icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/YouTube.png
     hidden: false
@@ -289,14 +288,14 @@ policy_groups:
     - Ai手动选择
     flatten: false
     icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/ChatGPT.png
-    hidden: true
+    hidden: false
 - select:
     name: 谷歌服务
     policies:
     - Ai手动选择
     flatten: false
     icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Google.png
-    hidden: true
+    hidden: false
 - load_balance:
     name: 🇺🇲 美国节点（负载均衡）
     policies:
@@ -342,7 +341,7 @@ policy_groups:
     - 🇭🇰 香港节点
     flatten: false
     icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Global.png
-    hidden: true
+    hidden: false
 - select:
     name: 🌹 Proxy（负载均衡）
     policies:
@@ -354,6 +353,14 @@ policy_groups:
     flatten: false
     icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Global.png
     hidden: true
+- select:
+    name: 🌹 Proxy
+    policies:
+    - 🌹 Proxy（负载均衡）
+    - 🌹 Proxy（手动选择）
+    flatten: true
+    icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Global.png
+    hidden: false
 - external:
     name: ✈️ 我的节点
     type: select
@@ -430,7 +437,8 @@ rules:
     policy: 国外媒体
 - rule_set:
     match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Proxy.list
-    policy: 🌹 Proxy（手动选择）
+    policy: 🌹 Proxy
+    disabled: false
 - rule_set:
     match: LAN
     policy: DIRECT
@@ -452,6 +460,7 @@ mitm:
     - app-analytics-services.com
 http_captures:
   includes:
+  - fuwu.rsj.beijing.gov.cn
   - vip.kugou.com
   - gateway.kugou.com
 widgets:
