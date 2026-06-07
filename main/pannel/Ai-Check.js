@@ -1,12 +1,24 @@
 /**
- * 多 AI 节点环境监测面板 v3.4 (Surge Panel)
+ * 多 AI 节点环境监测面板 v3.5 (Surge Panel)
  *
  * ChatGPT / Claude:
  *   1. 使用 cdn-cgi/trace 获取真实访问出口 IP
  *   2. 使用 ip-api.com/json/{ip} 查询该 IP 的归属地 / 运营商 / 类型 / 风险 / 纯净度
  *
  * Gemini:
- *   仅检测可用性，不检测 IP
+ *   半严格检测：
+ *   - 访问 https://gemini.google.com/app
+ *   - 如果入口可达，但无法确认真实对话能力，则显示“入口可达”
+ *   - 如果页面包含地区/不可用关键词，则显示“疑似不可用”
+ *   - 不再简单显示“✅ 可用”
+ *
+ * ── Surge 配置 ───────────────────────────────────────
+ * [Script]
+ * AI-Check = type=generic,timeout=35,script-path=Ai-Check.js
+ *
+ * [Panel]
+ * AI-Check = script-name=AI-Check,title="AI 节点监测",update-interval=0
+ * ─────────────────────────────────────────────────────
  */
 
 (async () => {
@@ -29,8 +41,8 @@
       {
         name: "Gemini",
         icon: "✨",
-        mode: "reachable",
-        url: "https://gemini.google.com/",
+        mode: "gemini-web",
+        url: "https://gemini.google.com/app",
       },
     ];
 
@@ -306,24 +318,78 @@
       }
     }
 
-    async function checkReachableTarget(t) {
+    async function checkGeminiWebTarget(t) {
       try {
         const res = await httpGet({
           url: t.url,
           timeout: TIMEOUT,
           headers: {
             "User-Agent": "Mozilla/5.0",
+            "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
           },
         });
 
         const status = res.status || 0;
+        const body = String(res.body || "").toLowerCase();
+
+        const pageReachable = status >= 200 && status < 500;
+
+        /**
+         * Gemini 网页大多是前端动态加载。
+         * 这里不能保证 100% 判断登录后能否对话，
+         * 只能识别明显的地区/服务不可用提示。
+         */
+        const blockedKeywords = [
+          "not available",
+          "not currently available",
+          "isn't currently supported",
+          "is not currently supported",
+          "unsupported",
+          "unavailable",
+          "country",
+          "region",
+          "your location",
+          "doesn't support",
+          "does not support",
+          "gemini isn't available",
+          "gemini is not available",
+          "此地区",
+          "所在地区",
+          "不可用",
+          "无法使用",
+          "暂不支持",
+        ];
+
+        const hasBlockedKeyword = blockedKeywords.some(k => body.includes(k));
+
+        let geminiStatus = "unknown";
+        let label = "未知";
+        let reason = "无法确认 Gemini 登录后是否可对话";
+
+        if (!pageReachable) {
+          geminiStatus = "down";
+          label = "❌ 入口不可达";
+          reason = "Gemini Web 入口请求失败";
+        } else if (hasBlockedKeyword) {
+          geminiStatus = "suspicious";
+          label = "⚠️ 疑似不可用";
+          reason = "页面包含地区/不可用相关提示";
+        } else {
+          geminiStatus = "reachable";
+          label = "🌐 入口可达";
+          reason = "非严格检测，不能代表登录后一定可对话";
+        }
 
         return {
           name: t.name,
           icon: t.icon,
           mode: t.mode,
-          reachable: status >= 200 && status < 500,
+          reachable: pageReachable && !hasBlockedKeyword,
+          pageReachable,
           status,
+          geminiStatus,
+          label,
+          reason,
         };
       } catch (_) {
         return {
@@ -331,7 +397,11 @@
           icon: t.icon,
           mode: t.mode,
           reachable: false,
+          pageReachable: false,
           status: 0,
+          geminiStatus: "down",
+          label: "❌ 入口不可达",
+          reason: "请求异常或超时",
         };
       }
     }
@@ -341,11 +411,24 @@
         return await checkTraceTarget(t);
       }
 
-      return await checkReachableTarget(t);
+      if (t.mode === "gemini-web") {
+        return await checkGeminiWebTarget(t);
+      }
+
+      return {
+        name: t.name,
+        icon: t.icon,
+        mode: t.mode,
+        reachable: false,
+      };
     }
 
     const results = [];
 
+    /**
+     * 顺序执行：
+     * 避免并发请求对 Surge 自动分流造成干扰。
+     */
     for (const t of targets) {
       const r = await checkOne(t);
       results.push(r);
@@ -355,9 +438,9 @@
     const lines = [];
 
     results.forEach((r, i) => {
-      lines.push(`${r.icon} ${r.name}   ${r.reachable ? "✅ 可用" : "❌ 不可用"}`);
-
       if (r.mode === "trace") {
+        lines.push(`${r.icon} ${r.name}   ${r.reachable ? "✅ 可用" : "❌ 不可用"}`);
+
         if (r.ok) {
           lines.push(`IP    : ${r.ip}`);
           lines.push(`归属  : ${r.loc}`);
@@ -377,8 +460,11 @@
         }
       }
 
-      if (r.mode === "reachable") {
-        lines.push(`检测  : 仅检测可用性`);
+      if (r.mode === "gemini-web") {
+        lines.push(`${r.icon} ${r.name}   ${r.label}`);
+        lines.push(`检测  : Gemini Web 半严格检测`);
+        lines.push(`说明  : ${r.reason}`);
+
         if (r.status) {
           lines.push(`状态码: ${r.status}`);
         }
