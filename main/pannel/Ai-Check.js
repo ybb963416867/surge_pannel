@@ -1,39 +1,43 @@
 /**
- * 多 AI 节点环境监测面板 v3.1 (Surge Panel)
- * 支持：ChatGPT / Gemini / Claude
+ * 多 AI 节点环境监测面板 v3.3 (Surge Panel)
  *
+ * ChatGPT / Claude:
+ *   使用 cdn-cgi/trace 获取真实访问出口 IP
+ *
+ * Gemini:
+ *   仅检测可用性，不检测 IP
+ *
+ * ── Surge 配置 ───────────────────────────────────────
  * [Script]
  * ai-panel = type=generic,script-path=ai-check.js,timeout=30
  *
  * [Panel]
  * AI-Status = script-name=ai-panel,update-interval=3600,title=AI节点监测
+ * ─────────────────────────────────────────────────────
  */
 
 (async () => {
   try {
-    const POLICY_GPT    = "ChatGPT";
-    const POLICY_GEMINI = "Gemini";
-    const POLICY_CLAUDE = "Claude";
-    const TIMEOUT       = 8000;
+    const TIMEOUT = 8000;
 
     const targets = [
       {
         name: "ChatGPT",
         icon: "🤖",
-        policy: POLICY_GPT,
-        testUrl: "https://chatgpt.com/cdn-cgi/trace",
-      },
-      {
-        name: "Gemini",
-        icon: "✨",
-        policy: POLICY_GEMINI,
-        testUrl: "https://gemini.google.com/",
+        mode: "trace",
+        url: "https://chatgpt.com/cdn-cgi/trace",
       },
       {
         name: "Claude",
         icon: "🔮",
-        policy: POLICY_CLAUDE,
-        testUrl: "https://claude.ai/api/auth/current-user",
+        mode: "trace",
+        url: "https://claude.ai/cdn-cgi/trace",
+      },
+      {
+        name: "Gemini",
+        icon: "✨",
+        mode: "reachable",
+        url: "https://gemini.google.com/",
       },
     ];
 
@@ -67,192 +71,131 @@
       ) + " ";
     }
 
-    const DC_RE = new RegExp(
-        [
-          "google",
-          "aws",
-          "amazon",
-          "azure",
-          "microsoft",
-          "cloudflare",
-          "alibaba",
-          "tencent",
-          "digitalocean",
-          "linode",
-          "vultr",
-          "oracle",
-          "ovh",
-          "hetzner",
-          "contabo",
-          "leaseweb",
-          "serverius",
-          "choopa",
-          "psychz",
-          "multacom",
-          "zenlayer",
-          "cogent",
-          "lumen",
-          "hurricane",
-          "he\\.net",
-          "buyvm",
-          "frantech",
-          "quadranet",
-          "reliablesite",
-          "sharktech",
-          "steadfast",
-          "nexeon",
-          "hostwinds",
-          "datacamp",
-          "m247",
-          "servers\\.com",
-        ].join("|"),
-        "i"
-    );
+    function parseTrace(body) {
+      const data = {};
 
-    function detectType(d) {
-      const str = `${d.isp || ""} ${d.org || ""}`;
+      if (!body) return data;
 
-      if (d.mobile) return { label: "📱 移动网络", key: "mobile" };
-      if (d.proxy) return { label: "🔀 代理/VPN", key: "proxy" };
-      if (d.hosting || DC_RE.test(str)) return { label: "🏢 数据中心", key: "dc" };
+      body.split("\n").forEach(line => {
+        const index = line.indexOf("=");
 
-      return { label: "🏠 住宅宽带", key: "res" };
-    }
+        if (index > -1) {
+          const key = line.slice(0, index).trim();
+          const value = line.slice(index + 1).trim();
 
-    const RISK_MAP = {
-      res:    { risk: "低 ✅", score: 95 },
-      mobile: { risk: "低 ✅", score: 85 },
-      proxy:  { risk: "中 ⚡", score: 50 },
-      dc:     { risk: "高 ⚠️", score: 25 },
-    };
-
-    async function checkReachable(t) {
-      try {
-        const r = await httpGet({
-          url: t.testUrl,
-          timeout: TIMEOUT,
-          headers: {
-            "User-Agent": "Mozilla/5.0",
-            "X-Surge-Policy": t.policy,
-          },
-        });
-
-        const s = r.status || 0;
-        return s >= 200 && s < 500;
-      } catch (_) {
-        return false;
-      }
-    }
-
-    async function getIpInfoByPolicy(policy) {
-      const res = await httpGet({
-        url: "http://ip-api.com/json/?lang=zh-CN&fields=61439",
-        timeout: TIMEOUT,
-        headers: {
-          "User-Agent": "Mozilla/5.0",
-          "X-Surge-Policy": policy,
-        },
+          if (key) {
+            data[key] = value;
+          }
+        }
       });
 
-      const j = JSON.parse(res.body || "{}");
-
-      if (!j || j.status === "fail") {
-        throw new Error(j.message || "ip-api fail");
-      }
-
-      return j;
+      return data;
     }
 
-    async function getIpInfoFallback(t) {
+    function normalizeWarp(warp) {
+      if (!warp) return "未知";
+
+      if (warp === "on") return "on";
+      if (warp === "off") return "off";
+      if (warp === "plus") return "plus";
+
+      return warp;
+    }
+
+    async function checkTraceTarget(t) {
       try {
-        await httpGet({
-          url: t.testUrl,
+        const res = await httpGet({
+          url: t.url,
           timeout: TIMEOUT,
           headers: {
             "User-Agent": "Mozilla/5.0",
           },
         });
-      } catch (_) {}
 
-      const res = await httpGet({
-        url: "http://ip-api.com/json/?lang=zh-CN&fields=61439",
-        timeout: TIMEOUT,
-        headers: {
-          "User-Agent": "Mozilla/5.0",
-        },
-      });
+        const status = res.status || 0;
+        const reachable = status >= 200 && status < 500;
 
-      const j = JSON.parse(res.body || "{}");
+        const trace = parseTrace(res.body);
 
-      if (!j || j.status === "fail") {
-        throw new Error(j.message || "ip-api fallback fail");
-      }
-
-      return j;
-    }
-
-    async function checkOne(t) {
-      const reachable = await checkReachable(t);
-
-      let d = null;
-
-      try {
-        d = await getIpInfoByPolicy(t.policy);
-      } catch (_) {
-        try {
-          d = await getIpInfoFallback(t);
-        } catch (_) {}
-      }
-
-      if (!d) {
         return {
           name: t.name,
           icon: t.icon,
+          mode: t.mode,
           reachable,
+          ok: Boolean(trace.ip),
+          ip: trace.ip || "获取失败",
+          loc: trace.loc || "—",
+          flag: getFlag(trace.loc || ""),
+          colo: trace.colo || "—",
+          warp: normalizeWarp(trace.warp),
+          http: trace.http || "—",
+          tls: trace.tls || "—",
+        };
+      } catch (_) {
+        return {
+          name: t.name,
+          icon: t.icon,
+          mode: t.mode,
+          reachable: false,
           ok: false,
           ip: "获取失败",
           loc: "—",
-          isp: "—",
-          type: "—",
-          risk: "—",
-          score: 0,
+          flag: "",
+          colo: "—",
+          warp: "—",
+          http: "—",
+          tls: "—",
         };
       }
-
-      const { label: typeLabel, key } = detectType(d);
-      const { risk, score } = RISK_MAP[key] || { risk: "未知", score: 0 };
-
-      const flag    = getFlag(d.countryCode || "");
-      const country = d.country || "";
-      const region  = d.regionName || "";
-      const city    = d.city || "";
-
-      const loc = [flag + country, region !== city ? region : "", city]
-          .filter(Boolean)
-          .join(" ")
-          .replace(/\s+/g, " ")
-          .trim();
-
-      let isp = d.isp || d.org || "—";
-      if (isp.length > 28) {
-        isp = isp.slice(0, 26) + "…";
-      }
-
-      return {
-        name: t.name,
-        icon: t.icon,
-        reachable,
-        ok: true,
-        ip: d.query || "—",
-        loc,
-        isp,
-        type: typeLabel,
-        risk,
-        score,
-      };
     }
 
-    const results = await Promise.all(targets.map(t => checkOne(t)));
+    async function checkReachableTarget(t) {
+      try {
+        const res = await httpGet({
+          url: t.url,
+          timeout: TIMEOUT,
+          headers: {
+            "User-Agent": "Mozilla/5.0",
+          },
+        });
+
+        const status = res.status || 0;
+
+        return {
+          name: t.name,
+          icon: t.icon,
+          mode: t.mode,
+          reachable: status >= 200 && status < 500,
+          status,
+        };
+      } catch (_) {
+        return {
+          name: t.name,
+          icon: t.icon,
+          mode: t.mode,
+          reachable: false,
+          status: 0,
+        };
+      }
+    }
+
+    async function checkOne(t) {
+      if (t.mode === "trace") {
+        return await checkTraceTarget(t);
+      }
+
+      return await checkReachableTarget(t);
+    }
+
+    const results = [];
+
+    /**
+     * 顺序执行，避免并发请求对自动分流判断造成干扰。
+     */
+    for (const t of targets) {
+      const r = await checkOne(t);
+      results.push(r);
+    }
 
     const SEP = "-------------------------";
     const lines = [];
@@ -260,14 +203,23 @@
     results.forEach((r, i) => {
       lines.push(`${r.icon} ${r.name}   ${r.reachable ? "✅ 可用" : "❌ 不可用"}`);
 
-      if (r.ok) {
-        lines.push(`IP    : ${r.ip}`);
-        lines.push(`归属  : ${r.loc}`);
-        lines.push(`运营商: ${r.isp}`);
-        lines.push(`类型  : ${r.type}`);
-        lines.push(`风险  : ${r.risk}   纯净度: ${r.score}/100`);
-      } else {
-        lines.push("IP 信息获取失败");
+      if (r.mode === "trace") {
+        if (r.ok) {
+          lines.push(`IP    : ${r.ip}`);
+          lines.push(`地区  : ${r.flag}${r.loc}`);
+          lines.push(`机房  : ${r.colo}`);
+          lines.push(`WARP  : ${r.warp}`);
+          lines.push(`协议  : ${r.http} / ${r.tls}`);
+        } else {
+          lines.push("IP 信息获取失败");
+        }
+      }
+
+      if (r.mode === "reachable") {
+        lines.push(`检测  : 仅检测可用性`);
+        if (r.status) {
+          lines.push(`状态码: ${r.status}`);
+        }
       }
 
       if (i < results.length - 1) {
