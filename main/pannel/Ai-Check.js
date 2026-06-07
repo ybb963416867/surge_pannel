@@ -1,61 +1,105 @@
 !(async () => {
-  // 1. 配置区
-  const POLICY_MAP = {
-    "ChatGPT": "https://chatgpt.com/cdn-cgi/trace",
-    "Gemini":  "https://gemini.google.com/",
-    "Claude":  "https://claude.ai/api/auth/current-user"
-  };
 
-  // 辅助：获取国旗
+  const TIMEOUT = 8000;
+
+  const targets = [
+    { name: "ChatGPT", icon: "🤖", testUrl: "https://chatgpt.com/cdn-cgi/trace" },
+    { name: "Gemini",  icon: "✨", testUrl: "https://gemini.google.com/" },
+    { name: "Claude",  icon: "🔮", testUrl: "https://claude.ai/api/auth/current-user" },
+  ];
+
   function getFlag(cc) {
     if (!cc || cc.length !== 2) return "";
-    return String.fromCodePoint(...[...cc.toUpperCase()].map(c => 0x1F1E6 + c.charCodeAt(0) - 65)) + " ";
+    return String.fromCodePoint(
+        ...[...cc.toUpperCase()].map(c => 0x1F1E6 + c.charCodeAt(0) - 65)
+    ) + " ";
   }
 
-  // 核心：检测单个 AI
-  async function checkOne(name, testUrl) {
-    $.log(`开始检测: ${name}`);
+  const DC_RE = /google|aws|amazon|azure|microsoft|cloudflare|alibaba|tencent|digitalocean|linode|vultr|oracle|ovh|hetzner|contabo|leaseweb|serverius|choopa|psychz|multacom|zenlayer|cogent|lumen|hurricane|he\.net|buyvm|frantech|quadranet|reliablesite|sharktech|steadfast|nexeon|hostwinds|datacamp|m247|servers\.com/i;
+
+  function detectType(d) {
+    const str = (d.isp || "") + " " + (d.org || "");
+    if (d.mobile)  return { label: "📱 移动网络", key: "mobile" };
+    if (d.proxy)   return { label: "🔀 代理/VPN", key: "proxy" };
+    if (d.hosting || DC_RE.test(str)) return { label: "🏢 数据中心", key: "dc" };
+    return { label: "🏠 住宅宽带", key: "res" };
+  }
+
+  const RISK_MAP = {
+    res:    { risk: "低 ✅",  score: 95 },
+    mobile: { risk: "低 ✅",  score: 85 },
+    proxy:  { risk: "中 ⚡", score: 50 },
+    dc:     { risk: "高 ⚠️", score: 25 },
+  };
+
+  async function checkOne(t) {
+    // 1. 可达性检测
+    let reachable = false;
     try {
-      // 先尝试探测连通性
-      const r = await $.http.get({ url: testUrl, timeout: 5000 });
-      const reachable = (r.status >= 200 && r.status < 500);
+      const r = await $.http.get({
+        url: t.testUrl, timeout: TIMEOUT,
+        headers: { "User-Agent": "Mozilla/5.0" },
+      });
+      const s = r.status || 0;
+      reachable = s >= 200 && s < 500;
+    } catch (_) {}
 
-      // 获取 IP 信息 (移除 X-Surge-Policy 强制绑定，改为默认分流，避免死锁)
-      const res = await $.http.get({ url: "https://api.myip.la/json?json", timeout: 5000 });
-      const d = JSON.parse(res.body);
+    // 2. 先触发分流，再查 IP
+    let d = null;
+    try {
+      await $.http.get({ url: t.testUrl, timeout: TIMEOUT }).catch(() => {});
+      const res = await $.http.get({
+        url: "http://ip-api.com/json/?lang=zh-CN&fields=61439",
+        timeout: TIMEOUT,
+      });
+      const j = JSON.parse(res.body);
+      if (j && j.status !== "fail") d = j;
+    } catch (_) {}
 
-      // 简单逻辑判断
-      const isDC = /Google|AWS|Cloudflare|Amazon/i.test(d.isp || "");
-      const risk = isDC ? "高 ⚠️" : "低 ✅";
-      const score = isDC ? 30 : 90;
-
-      return { name, reachable, ip: d.ip || "—", isp: (d.isp || "—").slice(0, 15), risk, score };
-    } catch (e) {
-      $.log(`检测失败 [${name}]: ${e}`);
-      return { name, reachable: false, error: true };
+    if (!d) {
+      return {
+        name: t.name, icon: t.icon, reachable, ok: false,
+        ip: "获取失败", loc: "—", isp: "—", type: "—", risk: "—", score: 0,
+      };
     }
+
+    const { label: typeLabel, key } = detectType(d);
+    const { risk, score } = RISK_MAP[key] || { risk: "未知", score: 0 };
+    const flag = getFlag(d.countryCode || "");
+    const country = d.country || "";
+    const region = d.regionName || "";
+    const city = d.city || "";
+    const loc = [flag + country, region !== city ? region : "", city]
+        .filter(Boolean).join(" ").replace(/\s+/g, " ").trim();
+    let isp = d.isp || d.org || "—";
+    if (isp.length > 28) isp = isp.slice(0, 26) + "…";
+
+    return { name: t.name, icon: t.icon, reachable, ok: true, ip: d.query || "—", loc, isp, type: typeLabel, risk, score };
   }
 
-  // 2. 并行执行 (使用 Promise.allSettled 防止单个失败导致整体中断)
-  const entries = Object.entries(POLICY_MAP);
-  const results = await Promise.all(entries.map(([name, url]) => checkOne(name, url)));
+  const results = await Promise.all(targets.map(t => checkOne(t)));
 
-  // 3. 组装内容
-  let content = "";
+  const SEP = "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄";
+  const lines = [];
   results.forEach((r, i) => {
-    if (r.error) {
-      content += `${r.name}: 检测异常\n`;
+    lines.push(`${r.icon} ${r.name} ${r.reachable ? "✅ 可用" : "❌ 不可用"}`);
+    if (r.ok) {
+      lines.push(` IP : ${r.ip}`);
+      lines.push(` 归属 : ${r.loc}`);
+      lines.push(` 运营商: ${r.isp}`);
+      lines.push(` 类型 : ${r.type}`);
+      lines.push(` 风险 : ${r.risk} 纯净度: ${r.score}/100`);
     } else {
-      content += `${r.name}: ${r.reachable ? "✅" : "❌"}\n`;
-      content += `IP: ${r.ip} (${r.isp})\n`;
-      content += `风险: ${r.risk} | 纯净度: ${r.score}/100\n`;
+      lines.push(` IP 信息获取失败`);
     }
-    if (i < results.length - 1) content += "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄\n";
+    if (i < results.length - 1) lines.push(SEP);
   });
 
-  $.done({ title: "🌐 AI 状态监控", content: content });
-})();
+  const now = new Date();
+  const pad = n => String(n).padStart(2, "0");
+  lines.push("");
+  lines.push(`🕐 ${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`);
 
-// 基础 Env 框架
-function Env(t){return new class{constructor(t){this.name=t;this.http={get:function(t){return new Promise((s,i)=>{$httpClient.get(t,(t,e,r)=>{t?i(t):s({status:e.status,body:r})})})}}}done(t){$done(t)}}(t)}
-const $ = new Env('Ai-Check');
+  $.done({ title: "🌐 AI 节点监测", content: lines.join("\n") });
+
+})();
