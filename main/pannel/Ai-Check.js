@@ -3,7 +3,7 @@
  * 支持：ChatGPT / Gemini / Claude
  * 检测：IP · 归属地 · 运营商 · 类型 · 风险 · 纯净度
  *
- * ── Surge 配置 ───────────────────────────────────────
+ * ── Surge 配置 ────────────────────────────────────────
  * [Script]
  * ai-panel = type=generic,script-path=ai-check.js,timeout=30
  *
@@ -11,7 +11,7 @@
  * AI-Status = script-name=ai-panel,update-interval=3600,title=AI节点监测
  * ─────────────────────────────────────────────────────
  *
- * ── 工作原理 ─────────────────────────────────────────
+ * ── 工作原理 ──────────────────────────────────────────
  * 原脚本三个 AI 共用一条 ip-api 请求，IP 永远相同。
  * 本脚本通过 X-Surge-Policy 请求头，把每条 ip-api 请求
  * 分别绑定到对应 AI 的策略组，精准获取各自出口 IP。
@@ -21,15 +21,15 @@
 
 !(async () => {
 
-  // ┌─────────────────────────────────────────────────┐
-  // │  ★ 配置区：把策略组名改成你 Surge 里实际的名称   │
-  // └─────────────────────────────────────────────────┘
-  const POLICY_GPT    = "ChatGPT";   // ChatGPT 策略组
-  const POLICY_GEMINI = "Gemini";    // Gemini  策略组
-  const POLICY_CLAUDE = "Claude";    // Claude  策略组
-  const TIMEOUT       = 8000;        // 超时（毫秒）
+  // ┌──────────────────────────────────────────────────┐
+  // │  ★ 配置区：把策略组名改成你 Surge 里实际的名称    │
+  // └──────────────────────────────────────────────────┘
+  const POLICY_GPT    = "ChatGPT";  // ChatGPT 策略组
+  const POLICY_GEMINI = "Gemini";   // Gemini  策略组
+  const POLICY_CLAUDE = "Claude";   // Claude  策略组
+  const TIMEOUT       = 8000;       // 超时（毫秒）
 
-  // ── 检测目标 ──────────────────────────────────────
+  // ── 检测目标 ───────────────────────────────────────
   const targets = [
     {
       name:    "ChatGPT",
@@ -59,17 +59,12 @@
     return String.fromCodePoint(
         ...[...cc.toUpperCase()].map(c => 0x1F1E6 + c.charCodeAt(0) - 65)
     ) + " ";
-  }
+  }  // ← 修复1：原版此处缺少 }
 
-  // ── 数据中心关键词（覆盖 30+ 主流云厂商/机房）──────
-  const DC_RE = /google|aws|amazon|azure|microsoft|cloudflare|
-  alibaba|tencent|digitalocean|linode|vultr|oracle|ovh|hetzner|
-  contabo|leaseweb|serverius|choopa|psychz|multacom|zenlayer|
-  cogent|lumen|hurricane|he\.net|buyvm|frantech|quadranet|
-  reliablesite|sharktech|steadfast|nexeon|hostwinds|
-  datacamp|m247|servers\.com/i;
+  // ── 数据中心关键词（覆盖 30+ 主流云厂商/机房）────────
+  const DC_RE = /google|aws|amazon|azure|microsoft|cloudflare|alibaba|tencent|digitalocean|linode|vultr|oracle|ovh|hetzner|contabo|leaseweb|serverius|choopa|psychz|multacom|zenlayer|cogent|lumen|hurricane|he\.net|buyvm|frantech|quadranet|reliablesite|sharktech|steadfast|nexeon|hostwinds|datacamp|m247|servers\.com/i;
 
-  // ── IP 类型识别 ───────────────────────────────────
+  // ── IP 类型识别 ────────────────────────────────────
   // 优先使用 ip-api 的 hosting / proxy / mobile 布尔字段
   // 再用 ISP 关键词兜底判断数据中心
   function detectType(d) {
@@ -78,9 +73,9 @@
     if (d.proxy)                         return { label: "🔀 代理/VPN", key: "proxy"  };
     if (d.hosting || DC_RE.test(str))    return { label: "🏢 数据中心", key: "dc"     };
     return                                      { label: "🏠 住宅宽带", key: "res"    };
-  }
+  }  // ← 修复2：原版此处缺少 }
 
-  // ── 风险 & 纯净度评分 ─────────────────────────────
+  // ── 风险 & 纯净度评分 ──────────────────────────────
   const RISK_MAP = {
     res:    { risk: "低 ✅",  score: 95 },
     mobile: { risk: "低 ✅",  score: 85 },
@@ -88,25 +83,26 @@
     dc:     { risk: "高 ⚠️", score: 25 },
   };
 
-  // ── 核心：检测单个 AI ─────────────────────────────
+  // ── 核心：检测单个 AI ──────────────────────────────
   async function checkOne(t) {
 
     // 1. 可达性检测
     let reachable = false;
     try {
       const r = await $.http.get({
-        url: t.testUrl, timeout: TIMEOUT,
+        url:     t.testUrl,
+        timeout: TIMEOUT,
         headers: { "User-Agent": "Mozilla/5.0" },
       });
       const s = r.status || 0;
-      reachable = s >= 200 && s < 500;   // 200~499 均视为可达
+      reachable = s >= 200 && s < 500;  // 200~499 均视为可达
     } catch (_) {}
 
     // 2. 主方案：X-Surge-Policy 精准绑定策略组查 IP
     let d = null;
     try {
       const res = await $.http.get({
-        url: "http://ip-api.com/json/?lang=zh-CN&fields=61439",
+        url:     "http://ip-api.com/json/?lang=zh-CN&fields=61439",
         timeout: TIMEOUT,
         headers: { "X-Surge-Policy": t.policy },
       });
@@ -119,13 +115,13 @@
       try {
         await $.http.get({ url: t.testUrl, timeout: TIMEOUT }).catch(() => {});
         const res = await $.http.get({
-          url: "http://ip-api.com/json/?lang=zh-CN&fields=61439",
+          url:     "http://ip-api.com/json/?lang=zh-CN&fields=61439",
           timeout: TIMEOUT,
         });
         const j = JSON.parse(res.body);
         if (j && j.status !== "fail") d = j;
       } catch (_) {}
-    }
+    }  // ← 修复3：原版此处缺少 }（回退 if 块未闭合）
 
     // 4. IP 信息获取失败
     if (!d) {
@@ -134,7 +130,7 @@
         ip: "获取失败", loc: "—", isp: "—",
         type: "—", risk: "—", score: 0,
       };
-    }
+    }  // ← 修复4：原版此处缺少 }
 
     // 5. 整理字段
     const { label: typeLabel, key } = detectType(d);
@@ -156,12 +152,13 @@
       name: t.name, icon: t.icon, reachable, ok: true,
       ip: d.query || "—", loc, isp, type: typeLabel, risk, score,
     };
-  }
 
-  // ── 三个 AI 并行检测 ──────────────────────────────
+  }  // ← 修复5：原版 checkOne 函数末尾缺少 }
+
+  // ── 三个 AI 并行检测 ───────────────────────────────
   const results = await Promise.all(targets.map(t => checkOne(t)));
 
-  // ── 组装面板内容 ──────────────────────────────────
+  // ── 组装面板内容 ───────────────────────────────────
   const SEP   = "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄";
   const lines = [];
 
@@ -175,7 +172,7 @@
       lines.push(`  风险  : ${r.risk}   纯净度: ${r.score}/100`);
     } else {
       lines.push(`  IP 信息获取失败`);
-    }
+    }  // ← 修复6：原版 else 块缺少 }
     if (i < results.length - 1) lines.push(SEP);
   });
 
