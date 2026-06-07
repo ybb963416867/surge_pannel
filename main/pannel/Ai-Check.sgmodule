@@ -1,8 +1,8 @@
-#!name=ai ip检测
-#!desc=ai ip信息
+#!name=AI 节点监测
+#!desc=ChatGPT / Claude 使用 cdn-cgi/trace 检测出口 IP，Gemini 仅检测可用性
 
 [Script]
-Ai-Check = type=generic,timeout=10,script-path=https://raw.githubusercontent.com/ybb963416867/surge_pannel/refs/heads/main/main/pannel/Ai-Check.js
+ai-check = type=generic,timeout=35,script-path=https://raw.githubusercontent.com/ybb963416867/surge_pannel/refs/heads/main/main/pannel/Ai-Check.js
 
 [Panel]
-Ai-Check = script-name=Ai-Check,title="Ai Ip检测",content="点击刷新",style=info,update-interval=0
+AI-Check = script-name=ai-check,title="AI 节点监测",update-interval=0
