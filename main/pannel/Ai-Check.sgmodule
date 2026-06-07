@@ -2,7 +2,7 @@
 #!desc=ChatGPT / Claude 检测出口 IP，Gemini 仅检测可用性
 
 [Script]
-AI-Check = type=generic,timeout=35,script-path=https://raw.githubusercontent.com/ybb963416867/surge_pannel/refs/heads/main/main/pannel/Ai-Check.js
+Ai-Check = type=generic,timeout=35,script-path=https://raw.githubusercontent.com/ybb963416867/surge_pannel/refs/heads/main/main/pannel/Ai-Check.js
 
 [Panel]
-AI-Check = script-name=Ai-Check,title="AI 节点监测",update-interval=0
+Ai-Check = script-name=Ai-Check,title="AI 节点监测",update-interval=0
