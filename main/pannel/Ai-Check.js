@@ -6,37 +6,39 @@
     "Claude":  "https://claude.ai/api/auth/current-user"
   };
 
-  // 辅助：获取国旗
-  function getFlag(cc) {
-    if (!cc || cc.length !== 2) return "";
-    return String.fromCodePoint(...[...cc.toUpperCase()].map(c => 0x1F1E6 + c.charCodeAt(0) - 65)) + " ";
-  }
-
   // 核心：检测单个 AI
   async function checkOne(name, testUrl) {
-    $.log(`开始检测: ${name}`);
+    $.log(`[${name}] 开始检测...`);
     try {
-      // 先尝试探测连通性
+      // A. 连通性检测
       const r = await $.http.get({ url: testUrl, timeout: 5000 });
       const reachable = (r.status >= 200 && r.status < 500);
 
-      // 获取 IP 信息 (移除 X-Surge-Policy 强制绑定，改为默认分流，避免死锁)
+      // B. 获取 IP 信息 (注意：api.myip.la 返回格式有时为纯文本或嵌套JSON)
       const res = await $.http.get({ url: "https://api.myip.la/json?json", timeout: 5000 });
-      const d = JSON.parse(res.body);
+      let d;
+      try {
+        d = JSON.parse(res.body);
+      } catch (e) {
+        $.log(`[${name}] JSON 解析失败: ${res.body}`);
+        return { name, reachable, error: true };
+      }
 
-      // 简单逻辑判断
-      const isDC = /Google|AWS|Cloudflare|Amazon/i.test(d.isp || "");
+      // C. 数据提取
+      const ip = d.ip || "—";
+      const isp = (d.isp || "—").slice(0, 15);
+      const isDC = /Google|AWS|Cloudflare|Amazon|Azure|DigitalOcean/i.test(d.isp || "");
       const risk = isDC ? "高 ⚠️" : "低 ✅";
       const score = isDC ? 30 : 90;
 
-      return { name, reachable, ip: d.ip || "—", isp: (d.isp || "—").slice(0, 15), risk, score };
+      return { name, reachable, ip, isp, risk, score, error: false };
     } catch (e) {
-      $.log(`检测失败 [${name}]: ${e}`);
+      $.log(`[${name}] 请求异常: ${e}`);
       return { name, reachable: false, error: true };
     }
   }
 
-  // 2. 并行执行 (使用 Promise.allSettled 防止单个失败导致整体中断)
+  // 2. 并行执行
   const entries = Object.entries(POLICY_MAP);
   const results = await Promise.all(entries.map(([name, url]) => checkOne(name, url)));
 
@@ -44,13 +46,13 @@
   let content = "";
   results.forEach((r, i) => {
     if (r.error) {
-      content += `${r.name}: 检测异常\n`;
+      content += `${r.name}: 获取数据失败 ❌\n`;
     } else {
       content += `${r.name}: ${r.reachable ? "✅" : "❌"}\n`;
-      content += `IP: ${r.ip} (${r.isp})\n`;
+      content += `IP: ${r.ip}\nISP: ${r.isp}\n`;
       content += `风险: ${r.risk} | 纯净度: ${r.score}/100\n`;
     }
-    if (i < results.length - 1) content += "┄┄┄┄┄┄┄aaaa┄┄┄┄┄┄┄┄\n";
+    if (i < results.length - 1) content += "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄\n";
   });
 
   $.done({ title: "🌐 AI 状态监控", content: content });
