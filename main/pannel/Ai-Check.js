@@ -197,7 +197,7 @@
       results.push(r);
     }
 
-    const SEP = "-------------------------";
+    const SEP = "-------------------------======";
     const lines = [];
 
     results.forEach((r, i) => {
