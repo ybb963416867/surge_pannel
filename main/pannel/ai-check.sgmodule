@@ -1,8 +1,8 @@
-#!name=IP 纯净度检测
-#!desc=显示 IP 类型、风险及纯净度评分
+#!name=ai ip检测
+#!desc=ai ip信息
 
 [Script]
-IP-Quality = type=generic,timeout=10,script-path=https://raw.githubusercontent.com/ybb963416867/surge_pannel/refs/heads/main/main/pannel/ai-check.js
+Ai-Check = type=generic,timeout=10,script-path=https://raw.githubusercontent.com/ybb963416867/surge_pannel/refs/heads/main/main/pannel/Ai-Check.js
 
 [Panel]
-IP-Quality = script-name=ai-check-pannel,title="Ai Ip检测",content="点击刷新",style=info,update-interval=0
+Ai-Check = script-name=Ai-Check,title="Ai Ip检测",content="点击刷新",style=info,update-interval=0
