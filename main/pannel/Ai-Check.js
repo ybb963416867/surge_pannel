@@ -50,7 +50,7 @@
       content += `IP: ${r.ip} (${r.isp})\n`;
       content += `风险: ${r.risk} | 纯净度: ${r.score}/100\n`;
     }
-    if (i < results.length - 1) content += "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄\n";
+    if (i < results.length - 1) content += "┄┄┄┄┄┄┄aaaa┄┄┄┄┄┄┄┄\n";
   });
 
   $.done({ title: "🌐 AI 状态监控", content: content });
