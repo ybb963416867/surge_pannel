@@ -17,152 +17,36 @@ vif_excluded_routes:
 - 172.16.0.0/12
 - 192.168.0.0/16
 dns:
-  bootstrap:
-  - system
-  - 223.5.5.5
-  - 119.29.29.29
   upstreams:
-    AliDNS:
-    - h3://dns.alidns.com/dns-query
-    DNSPod:
+    兜底DNS:
+    - quic://223.5.5.5:853
+    - quic://223.6.6.6:853
+    - quic://dns.quad9.net:784
+    - quic://dns.alidns.com:853
+    - quic://dns.cloudflare.com:784
+    - https://1.1.1.1/dns-query
     - https://doh.pub/dns-query
-    ByteDance:
-    - 180.184.1.1
-    - 180.184.2.2
-    Default:
-    - https://doh.pub/dns-query
-    - h3://dns.alidns.com/dns-query
+    - https://1.12.12.12/dns-query
+    - https://223.5.5.5/dns-query
+    - https://223.6.6.6/dns-query
+    - https://dns.google/dns-query
+    - https://dns.quad9.net/dns-query
+    - https://dns.alidns.com/dns-query
+    - https://cloudflare-dns.com/dns-query
   forward:
-  - domain_suffix:
-      match: alibaba.com
-      value: AliDNS
-  - domain_suffix:
-      match: alipay.com
-      value: AliDNS
-  - domain_suffix:
-      match: alipayobjects.com
-      value: AliDNS
-  - domain_suffix:
-      match: aliapp.org
-      value: AliDNS
-  - domain_suffix:
-      match: alicdn.com
-      value: AliDNS
-  - domain_suffix:
-      match: aliyun.com
-      value: AliDNS
-  - domain_suffix:
-      match: taobao.com
-      value: AliDNS
-  - domain_suffix:
-      match: tmall.com
-      value: AliDNS
-  - domain_suffix:
-      match: dingtalk.com
-      value: AliDNS
-  - domain_suffix:
-      match: 1688.com
-      value: AliDNS
-  - domain_suffix:
-      match: youku.com
-      value: AliDNS
-  - domain_suffix:
-      match: uc.cn
-      value: AliDNS
-  - domain_suffix:
-      match: amap.com
-      value: AliDNS
-  - domain_suffix:
-      match: ele.me
-      value: AliDNS
-  - domain_suffix:
-      match: hichina.com
-      value: AliDNS
-  - domain_suffix:
-      match: alibabacloud.com
-      value: AliDNS
-  - domain_suffix:
-      match: qq.com
-      value: DNSPod
-  - domain_suffix:
-      match: tencent.com
-      value: DNSPod
-  - domain_suffix:
-      match: wechat.com
-      value: DNSPod
-  - domain_suffix:
-      match: qpic.cn
-      value: DNSPod
-  - domain_suffix:
-      match: qlogo.cn
-      value: DNSPod
-  - domain_suffix:
-      match: gtimg.com
-      value: DNSPod
-  - domain_suffix:
-      match: qcloud.com
-      value: DNSPod
-  - domain_suffix:
-      match: wegame.com
-      value: DNSPod
-  - domain_suffix:
-      match: bytedance.com
-      value: ByteDance
-  - domain_suffix:
-      match: byteimg.com
-      value: ByteDance
-  - domain_suffix:
-      match: douyinvod.com
-      value: ByteDance
-  - domain_suffix:
-      match: douyin.com
-      value: ByteDance
-  - domain_suffix:
-      match: toutiao.com
-      value: ByteDance
-  - domain_suffix:
-      match: bdurl.net
-      value: ByteDance
-  - domain_suffix:
-      match: bytecdn.cn
-      value: ByteDance
-  - domain_suffix:
-      match: feishu.cn
-      value: ByteDance
-  - domain_suffix:
-      match: larksuite.com
-      value: ByteDance
-  - domain_suffix:
-      match: ixigua.com
-      value: ByteDance
-  - domain_suffix:
-      match: capcut.com
-      value: ByteDance
-  - domain_suffix:
-      match: zjurl.cn
-      value: ByteDance
-  - domain_suffix:
-      match: pstatp.com
-      value: ByteDance
-  - domain_suffix:
-      match: snssdk.com
-      value: ByteDance
-  - domain_suffix:
-      match: local
-      value: system
-  - domain_suffix:
-      match: localhost
-      value: system
-  - domain_suffix:
-      match: lan
-      value: system
-  - domain_suffix:
-      match: router.asus.com
-      value: system
   - domain_wildcard:
       match: '*'
-      value: Default
+      value: 兜底DNS
 policy_groups:
+- auto_test:
+    name: Spotify
+    policies:
+    - DIRECT
+    - 🇭🇰 香港节点
+    - 🇭🇰 香港节点（负载均衡）
+    flatten: false
+    icon: https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Spotify.png
+    hidden: false
 - select:
     name: TikTok
     policies:
@@ -204,7 +88,8 @@ policy_groups:
 - select:
     name: YouTube
     policies:
-    - 🌹 Proxy
+    - 🌹 Proxy（负载均衡）
+    - 🌹 Proxy（手动选择）
     flatten: true
     icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/YouTube.png
     hidden: false
@@ -292,8 +177,12 @@ policy_groups:
 - select:
     name: 谷歌服务
     policies:
-    - Ai手动选择
-    flatten: false
+    - 🇸🇬 新加坡节点
+    - 🇨🇳 台湾节点
+    - 🇯🇵 日本节点
+    - 🇺🇲 美国节点
+    - 🇭🇰 香港节点
+    flatten: true
     icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Google.png
     hidden: false
 - load_balance:
@@ -341,7 +230,7 @@ policy_groups:
     - 🇭🇰 香港节点
     flatten: false
     icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Global.png
-    hidden: false
+    hidden: true
 - select:
     name: 🌹 Proxy（负载均衡）
     policies:
@@ -356,19 +245,35 @@ policy_groups:
 - select:
     name: 🌹 Proxy
     policies:
-    - 🌹 Proxy（负载均衡）
-    - 🌹 Proxy（手动选择）
+    - ✈️ 我的节点
     flatten: true
     icon: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/image/Global.png
     hidden: false
 - external:
-    name: ✈️ 我的节点
+     name: ✈️ 我的节点
     type: select
     urls:
     - https://sub.store/download/collection/AllServer?target=Egern
     update_interval: 86400
     hidden: false
 rules:
+- domain:
+    match: ipinfo.cv
+    policy: Ai手动选择
+    disabled: false
+- rule_set:
+    name: Spotify
+    match: https://yfamilys.com/rule/Spotify.list
+    policy: Spotify
+    disabled: false
+- domain_keyword:
+    match: yfamilys
+    policy: GitHub
+    disabled: false
+- domain_keyword:
+    match: missav
+    policy: 国外媒体
+    disabled: false
 - rule_set:
     match: https://raw.githubusercontent.com/Thoseyearsbrian/Aegis/main/rules/Background_Block.list
     policy: REJECT
@@ -466,6 +371,10 @@ http_captures:
 widgets:
 - name: 日历
 modules:
+- url: https://yfamilys.com/module/spotifyVIP.module
+  enabled: true
+- url: https://raw.githubusercontent.com/ybb963416867/surge_pannel/refs/heads/main/main/pannel/Ai-Check.sgmodule
+  enabled: true
 - url: https://raw.githubusercontent.com/Yu9191/Rewrite/e2e48763f1a0c8504d0e61d3f04f1834dbec905a/KuGou.sgmodule
   enabled: true
 - name: IP纯净度
@@ -487,28 +396,4 @@ modules:
   enabled: true
 - name: YouTube Enhance
   url: https://raw.githubusercontent.com/Maasea/sgmodule/master/YouTube.Enhance.sgmodule
-  enabled: true
-- name: KuGou
-  url: https://raw.githubusercontent.com/Yu9191/Rewrite/refs/heads/main/KuGou.sgmodule
-  enabled: true
-- name: 雪球去广告
-  url: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/Egern/Module/Xueqiu.yaml
-  enabled: true
-- name: 综合电商去广告
-  url: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/Egern/Module/EcommerceAdBlock.yaml
-  enabled: true
-- name: 地图三合一去广告
-  url: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/Egern/Module/MapAdBlock.yaml
-  enabled: true
-- name: 差旅出行去广告
-  url: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/Egern/Module/TravelAdBlock.yaml
-  enabled: true
-- name: 音乐流媒体去广告
-  url: https://raw.githubusercontent.com/ybb963416867/surge_pannel/refs/heads/main/main/module/MusicAdBlock.yaml
-  enabled: true
-- name: 视频流媒体去广告
-  url: https://raw.githubusercontent.com/jnlaoshu/MySelf/main/Egern/Module/VideoAdBlock.yaml
-  enabled: true
-- name: BiliBili去广告
-  url: https://raw.githubusercontent.com/app2smile/rules/master/module/bilibili.sgmodule
   enabled: true
